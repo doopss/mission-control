@@ -63,7 +63,12 @@
 
 ## Kanban Maintenance (CRITICAL)
 
-**Update the Kanban immediately when:**
+**Two Kanban systems to update:**
+
+### 1. Static Kanban (GitHub Pages)
+**URL:** https://doopss.github.io/kanban-board/
+
+**Update when:**
 - Task moves from BLOCKED → READY → IN PROGRESS → COMPLETED
 - New blocker discovered
 - Sub-agent finishes work
@@ -76,6 +81,24 @@
 4. Commit: `git add index.html && git commit -m "Update: <what changed>"`
 5. Push: `git push origin main`
 
-**Live URL:** https://doopss.github.io/kanban-board/
+### 2. Mission Control Kanban (Convex/Vercel)
+**URL:** https://hb-mission-control.vercel.app (Kanban tab)
 
-This is your project dashboard. Keep it current. Alex relies on it to see progress.
+**Update when:**
+- Complete a task or major work item
+- Log using the script:
+
+```bash
+cd ~/.openclaw/workspace/mission-control
+npx tsx scripts/openclaw-logger.ts \
+  --type "development" \
+  --title "Task Name" \
+  --description "What was done" \
+  --category "development" \
+  --status "completed" \
+  --tags "tag1,tag2"
+```
+
+**Or create activities programmatically** when logging significant work.
+
+**Both are important:** Static Kanban for quick visual reference, Mission Control for searchable activity history.
