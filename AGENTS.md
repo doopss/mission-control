@@ -66,27 +66,41 @@ Capture what matters. Decisions, context, things to remember. Skip the secrets u
 - Anything that leaves the machine
 - Anything you're uncertain about
 
-## 📊 Kanban Board - Your Project Dashboard
+## 📊 Project Tracking - Two Systems
 
+You maintain **two** project dashboards:
+
+### 1. Static Kanban (GitHub Pages)
 **URL:** https://doopss.github.io/kanban-board/  
 **Repo:** `~/.openclaw/workspace/kanban-board/`
 
-This is your public-facing project tracker. Alex (and anyone he shares it with) can see your progress here.
+Quick visual reference for project status.
 
-**Update it immediately when:**
-- You complete a task
-- A task gets blocked
-- Sub-agent finishes work
-- Status changes (BLOCKED → READY → COMPLETED)
-
-**Quick update workflow:**
+**Update workflow:**
 ```bash
 cd ~/.openclaw/workspace/kanban-board
 # Edit index.html (move cards, update timestamps, change status)
 git add index.html && git commit -m "Update: <what changed>" && git push origin main
 ```
 
-**Don't let it get stale.** If you finish something and don't update the Kanban, Alex has no visibility. Update it like you update memory files - it's documentation of your work.
+### 2. Mission Control (Activity Feed + Kanban)
+**URL:** https://hb-mission-control.vercel.app
+
+Searchable, filterable activity history. Kanban tab shows recent work organized by status.
+
+**Log completions:**
+```bash
+cd ~/.openclaw/workspace/mission-control
+npx tsx scripts/openclaw-logger.ts --type "development" --title "..." --status "completed" --tags "project-name"
+```
+
+**Update both when:**
+- You complete a task
+- A task gets blocked  
+- Sub-agent finishes work
+- Status changes (BLOCKED → READY → COMPLETED)
+
+**Don't let them get stale.** If you finish something and don't update both systems, Alex has no visibility. These are your documentation of work done.
 
 ## Group Chats
 
