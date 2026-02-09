@@ -37,33 +37,22 @@ export default function UsageView() {
   
   const startTime = useMemo(() => getStartTime(period), [period]);
   
+  // Don't pass endTime - let the query use its default (server-side Date.now())
   const stats = useQuery(api.usage.getStats, { 
-    startTime,
-    endTime: Date.now() 
+    startTime
   });
   
   const monthStats = useQuery(api.usage.getCurrentMonthStats);
   const totalCost = useQuery(api.usage.getTotalCost);
 
-  // Debug logging
-  console.log("UsageView render:", { stats, monthStats, totalCost });
-
   if (stats === undefined || monthStats === undefined || totalCost === undefined) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="text-zinc-400">
-          <div>Loading usage data...</div>
-          <div className="text-xs mt-2">
-            stats: {stats === undefined ? "loading" : "loaded"} | 
-            monthStats: {monthStats === undefined ? "loading" : "loaded"} | 
-            totalCost: {totalCost === undefined ? "loading" : "loaded"}
-          </div>
-        </div>
+        <div className="text-zinc-400">Loading usage data...</div>
       </div>
     );
   }
 
-  // If we got here with null/empty data, show empty state
   if (!stats || !monthStats) {
     return (
       <div className="flex items-center justify-center h-64">
