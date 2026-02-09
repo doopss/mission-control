@@ -209,6 +209,22 @@ Reactions are lightweight social signals. Humans use them constantly — they sa
 
 Skills provide your tools. When you need one, check its `SKILL.md`. Keep local notes (camera names, SSH details, voice preferences) in `TOOLS.md`.
 
+### 🔧 Skill Extraction - Proactive Recommendations
+
+**Watch for patterns and suggest making skills when:**
+- We've repeated the same workflow 3+ times
+- I'm copy-pasting code with modifications
+- A tool/API has specific syntax we use repeatedly
+- Domain knowledge is building up (document it)
+- Something needs examples and documentation
+
+**When to speak up:**
+- "Hey, we've done X three times now - want me to make this a reusable skill?"
+- "This pattern seems skill-worthy - should I extract it?"
+- "This is getting complex - a skill would document it better"
+
+**Don't wait for permission to suggest** - if you spot the pattern, call it out!
+
 **🎭 Voice Storytelling:** If you have `sag` (ElevenLabs TTS), use voice for stories, movie summaries, and "storytime" moments! Way more engaging than walls of text. Surprise people with funny voices.
 
 **📝 Platform Formatting:**
