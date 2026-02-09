@@ -23,6 +23,13 @@ interface KanbanCard {
   scheduledFor?: number;
   column: KanbanColumn;
   metadata?: Record<string, unknown>;
+  fileContents?: Array<{
+    path: string;
+    content: string;
+    size: number;
+    mimeType: string;
+    lastModified: number;
+  }>;
 }
 
 // Category styling
@@ -84,6 +91,7 @@ function toCardData(card: KanbanCard): CardData {
     scheduledFor: card.scheduledFor,
     column: card.column,
     metadata: card.metadata,
+    fileContents: card.fileContents,
   };
 }
 

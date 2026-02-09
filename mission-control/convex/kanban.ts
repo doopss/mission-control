@@ -21,6 +21,14 @@ export interface KanbanCard {
   duration?: number;
   scheduledFor?: number;
   column: KanbanColumn;
+  metadata?: Record<string, unknown>;
+  fileContents?: Array<{
+    path: string;
+    content: string;
+    size: number;
+    mimeType: string;
+    lastModified: number;
+  }>;
 }
 
 // Get all items organized by Kanban columns
@@ -83,6 +91,8 @@ export const getKanbanData = query({
         tags: activity.tags,
         duration: activity.duration,
         column: "done", // will be overwritten
+        metadata: activity.metadata,
+        fileContents: activity.fileContents,
       };
 
       if (activity.status === "blocked") {
