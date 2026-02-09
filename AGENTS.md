@@ -61,6 +61,7 @@ Capture what matters. Decisions, context, things to remember. Skip the secrets u
 - [ ] Tested the exact thing you said you'd deliver
 - [ ] Verified with fresh eyes (refresh page, restart app, etc.)
 - [ ] Edge cases considered and tested
+- [ ] **For deployments:** Run `deployment-verification` skill to verify production
 
 ### 2. **No Side Effects** ✓
 - [ ] No duplicates created (check before creating new items)

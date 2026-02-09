@@ -44,6 +44,21 @@ _This is my curated memory - the distilled essence of what I've learned, not raw
 
 ---
 
+### Dev vs Prod Environments (Learned: Feb 9, 2026)
+**Problem:** Mission Control Kanban wasn't showing logged activities with files in production.
+
+**Root cause:** Convex has TWO deployments:
+- Dev: `good-lemming-768.convex.cloud` (local dev, .env.local default)
+- Prod: `diligent-tortoise-263.convex.cloud` (live Vercel site)
+
+Was logging to dev, production reads from prod.
+
+**Solution:** Updated logger to use prod by default. When working with backend services, always check dev vs prod config.
+
+**Lesson learned:** Don't assume .env.local is what production uses. Check environment-specific configs (Vercel env vars, Convex deployments, etc.) when debugging "works locally, fails in prod" issues.
+
+---
+
 ### Dual Kanban System (Learned: Feb 8, 2026)
 **Problem:** I kept forgetting to update project status, leaving Alex without visibility.
 
