@@ -16,7 +16,9 @@ import { ConvexHttpClient } from "convex/browser";
 import { api } from "../convex/_generated/api";
 import * as fs from "fs";
 
-const CONVEX_URL = process.env.NEXT_PUBLIC_CONVEX_URL || "";
+// Always use PROD deployment for activity logging
+// Dev deployment (good-lemming-768) is for local development only
+const CONVEX_URL = process.env.OPENCLAW_LOGGER_CONVEX_URL || "https://diligent-tortoise-263.convex.cloud";
 const client = new ConvexHttpClient(CONVEX_URL);
 
 // Workspace root for resolving file paths
