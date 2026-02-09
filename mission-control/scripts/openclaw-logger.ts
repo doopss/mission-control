@@ -6,10 +6,15 @@
  * Can be called from OpenClaw tools or run as a background service
  */
 
+import * as dotenv from "dotenv";
+import * as path from "path";
+
+// Load .env.local from mission-control directory
+dotenv.config({ path: path.join(__dirname, "..", ".env.local") });
+
 import { ConvexHttpClient } from "convex/browser";
 import { api } from "../convex/_generated/api";
 import * as fs from "fs";
-import * as path from "path";
 
 const CONVEX_URL = process.env.NEXT_PUBLIC_CONVEX_URL || "";
 const client = new ConvexHttpClient(CONVEX_URL);
