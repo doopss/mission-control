@@ -21,6 +21,13 @@ export interface CardData {
   scheduledFor?: number;
   column?: string;
   metadata?: Record<string, unknown>;
+  fileContents?: Array<{
+    path: string;
+    content: string;
+    size: number;
+    mimeType: string;
+    lastModified: number;
+  }>;
 }
 
 // Category styling
