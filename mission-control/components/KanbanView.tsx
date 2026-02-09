@@ -5,6 +5,7 @@ import { api } from "@/convex/_generated/api";
 import { useState, useCallback, useEffect, DragEvent, useRef } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import FileViewer from "./FileViewer";
 
 // Types
 type KanbanColumn = "blocked" | "now" | "next" | "done";
@@ -88,6 +89,7 @@ function CardDetailModal({
   const modalRef = useRef<HTMLDivElement>(null);
   const style = categoryColors[card.category] || defaultCategoryStyle;
   const columnInfo = columnConfig[card.column];
+  const [viewingFile, setViewingFile] = useState<string | null>(null);
 
   // Close on ESC key
   useEffect(() => {
@@ -258,28 +260,57 @@ function CardDetailModal({
                   const fileName = file.split("/").pop() || file;
                   const isMarkdownFile = file.endsWith(".md");
                   const isCodeFile = /\.(ts|tsx|js|jsx|py|go|rs|java|c|cpp|h|css|scss|json|yaml|yml|toml)$/.test(file);
+                  const isViewable = isMarkdownFile || isCodeFile || file.endsWith(".txt");
+                  const isCurrentlyViewing = viewingFile === file;
                   
                   return (
-                    <div
-                      key={i}
-                      className="flex items-center gap-3 bg-zinc-800/50 rounded-lg p-3 border border-zinc-700 hover:border-zinc-600 transition-colors group"
-                    >
-                      <span className="text-lg">
-                        {isMarkdownFile ? "📄" : isCodeFile ? "📝" : "📁"}
-                      </span>
-                      <div className="flex-1 min-w-0">
-                        <div className="text-sm text-white font-medium truncate">{fileName}</div>
-                        <div className="text-xs text-zinc-500 truncate" title={file}>{file}</div>
-                      </div>
-                      {isMarkdownFile && (
-                        <span className="text-xs px-2 py-0.5 bg-emerald-500/20 text-emerald-400 rounded">
-                          MD
+                    <div key={i} className="space-y-2">
+                      <button
+                        onClick={() => setViewingFile(isCurrentlyViewing ? null : file)}
+                        disabled={!isViewable}
+                        className={`w-full flex items-center gap-3 bg-zinc-800/50 rounded-lg p-3 border transition-all text-left ${
+                          isCurrentlyViewing
+                            ? "border-emerald-500/50 bg-emerald-500/10"
+                            : isViewable
+                            ? "border-zinc-700 hover:border-emerald-500/30 hover:bg-zinc-800/70 cursor-pointer"
+                            : "border-zinc-700 opacity-60 cursor-not-allowed"
+                        }`}
+                      >
+                        <span className="text-lg">
+                          {isMarkdownFile ? "📄" : isCodeFile ? "📝" : "📁"}
                         </span>
-                      )}
-                      {isCodeFile && (
-                        <span className="text-xs px-2 py-0.5 bg-blue-500/20 text-blue-400 rounded">
-                          {file.split(".").pop()?.toUpperCase()}
-                        </span>
+                        <div className="flex-1 min-w-0">
+                          <div className="text-sm text-white font-medium truncate">{fileName}</div>
+                          <div className="text-xs text-zinc-500 truncate" title={file}>{file}</div>
+                        </div>
+                        {isViewable && (
+                          <span className={`text-xs px-2 py-1 rounded transition-colors ${
+                            isCurrentlyViewing
+                              ? "bg-emerald-500/20 text-emerald-400"
+                              : "bg-zinc-700 text-zinc-400 group-hover:bg-emerald-500/20 group-hover:text-emerald-400"
+                          }`}>
+                            {isCurrentlyViewing ? "Hide" : "View"}
+                          </span>
+                        )}
+                        {isMarkdownFile && (
+                          <span className="text-xs px-2 py-0.5 bg-emerald-500/20 text-emerald-400 rounded">
+                            MD
+                          </span>
+                        )}
+                        {isCodeFile && !isMarkdownFile && (
+                          <span className="text-xs px-2 py-0.5 bg-blue-500/20 text-blue-400 rounded">
+                            {file.split(".").pop()?.toUpperCase()}
+                          </span>
+                        )}
+                      </button>
+                      
+                      {/* File Viewer */}
+                      {isCurrentlyViewing && (
+                        <FileViewer
+                          filePath={file}
+                          onClose={() => setViewingFile(null)}
+                          activityId={card.type === "activity" ? card.id : undefined}
+                        />
                       )}
                     </div>
                   );

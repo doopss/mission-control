@@ -14,6 +14,14 @@ export default defineSchema({
     duration: v.optional(v.number()), // Time spent in minutes
     relatedFiles: v.optional(v.array(v.string())), // Array of file paths
     tags: v.optional(v.array(v.string())), // Searchable tags
+    // Stored file contents for Vercel deployment (filesystem not accessible)
+    fileContents: v.optional(v.array(v.object({
+      path: v.string(),
+      content: v.string(),
+      size: v.number(),
+      mimeType: v.string(),
+      lastModified: v.number()
+    }))),
   })
     .index("by_timestamp", ["timestamp"])
     .index("by_category", ["category", "timestamp"])

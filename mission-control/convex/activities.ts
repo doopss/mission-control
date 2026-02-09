@@ -56,12 +56,29 @@ export const log = mutation({
     relatedFiles: v.optional(v.array(v.string())),
     tags: v.optional(v.array(v.string())),
     metadata: v.optional(v.any()),
+    fileContents: v.optional(v.array(v.object({
+      path: v.string(),
+      content: v.string(),
+      size: v.number(),
+      mimeType: v.string(),
+      lastModified: v.number()
+    }))),
   },
   handler: async (ctx, args) => {
     return await ctx.db.insert("activities", {
       timestamp: Date.now(),
       ...args,
     });
+  },
+});
+
+// Get a single activity by ID
+export const get = query({
+  args: {
+    id: v.id("activities"),
+  },
+  handler: async (ctx, args) => {
+    return await ctx.db.get(args.id);
   },
 });
 

@@ -14,6 +14,27 @@ import * as path from "path";
 const CONVEX_URL = process.env.NEXT_PUBLIC_CONVEX_URL || "";
 const client = new ConvexHttpClient(CONVEX_URL);
 
+// Workspace root for resolving file paths
+const WORKSPACE_ROOT = process.env.WORKSPACE_ROOT || path.join(process.env.HOME || "", ".openclaw/workspace");
+
+// Max file size for storage (500KB per file to stay within Convex limits)
+const MAX_FILE_SIZE = 500 * 1024;
+
+// Allowed text-based extensions for file storage
+const TEXT_EXTENSIONS = [
+  ".md", ".txt", ".json", ".js", ".ts", ".tsx", ".jsx",
+  ".css", ".scss", ".html", ".yaml", ".yml", ".toml",
+  ".py", ".sh", ".env", ".gitignore", ".sql"
+];
+
+interface FileContent {
+  path: string;
+  content: string;
+  size: number;
+  mimeType: string;
+  lastModified: number;
+}
+
 interface ActivityLog {
   type: string;
   title: string;
@@ -24,15 +45,129 @@ interface ActivityLog {
   relatedFiles?: string[];
   tags?: string[];
   metadata?: any;
+  fileContents?: FileContent[];
+}
+
+function getMimeType(extension: string): string {
+  const mimeTypes: Record<string, string> = {
+    ".md": "text/markdown",
+    ".txt": "text/plain",
+    ".json": "application/json",
+    ".js": "text/javascript",
+    ".ts": "text/typescript",
+    ".tsx": "text/tsx",
+    ".jsx": "text/jsx",
+    ".css": "text/css",
+    ".scss": "text/scss",
+    ".html": "text/html",
+    ".yaml": "text/yaml",
+    ".yml": "text/yaml",
+    ".toml": "text/toml",
+    ".py": "text/x-python",
+    ".sh": "text/x-shellscript",
+    ".env": "text/plain",
+    ".gitignore": "text/plain",
+    ".sql": "text/x-sql",
+  };
+  return mimeTypes[extension] || "text/plain";
+}
+
+/**
+ * Read file contents for storage in Convex
+ * Returns null if file can't be read or is too large/binary
+ */
+function readFileForStorage(filePath: string): FileContent | null {
+  try {
+    // Resolve the full path
+    let fullPath = filePath;
+    if (!path.isAbsolute(filePath)) {
+      fullPath = path.resolve(WORKSPACE_ROOT, filePath);
+    }
+    
+    // Check if file exists
+    if (!fs.existsSync(fullPath)) {
+      console.warn(`⚠️  File not found: ${filePath}`);
+      return null;
+    }
+    
+    const stats = fs.statSync(fullPath);
+    
+    // Skip directories
+    if (stats.isDirectory()) {
+      console.warn(`⚠️  Skipping directory: ${filePath}`);
+      return null;
+    }
+    
+    // Check file size
+    if (stats.size > MAX_FILE_SIZE) {
+      console.warn(`⚠️  File too large (${Math.round(stats.size / 1024)}KB > ${MAX_FILE_SIZE / 1024}KB): ${filePath}`);
+      return null;
+    }
+    
+    // Check extension
+    const ext = path.extname(fullPath).toLowerCase();
+    if (!TEXT_EXTENSIONS.includes(ext) && ext !== "") {
+      console.warn(`⚠️  Skipping binary file: ${filePath}`);
+      return null;
+    }
+    
+    // Read file content
+    const content = fs.readFileSync(fullPath, "utf-8");
+    
+    // Get the relative path for storage
+    let relativePath = filePath;
+    if (fullPath.startsWith(WORKSPACE_ROOT)) {
+      relativePath = fullPath.slice(WORKSPACE_ROOT.length + 1);
+    }
+    
+    return {
+      path: relativePath,
+      content,
+      size: stats.size,
+      mimeType: getMimeType(ext),
+      lastModified: stats.mtimeMs
+    };
+  } catch (error) {
+    console.warn(`⚠️  Failed to read file ${filePath}: ${error}`);
+    return null;
+  }
+}
+
+/**
+ * Read all related files and return their contents
+ */
+function readRelatedFiles(filePaths: string[]): FileContent[] {
+  const contents: FileContent[] = [];
+  
+  for (const filePath of filePaths) {
+    const fileContent = readFileForStorage(filePath);
+    if (fileContent) {
+      contents.push(fileContent);
+      console.log(`📄 Stored file: ${fileContent.path} (${Math.round(fileContent.size / 1024)}KB)`);
+    }
+  }
+  
+  return contents;
 }
 
 /**
  * Log an activity to Mission Control
+ * Automatically reads and stores file contents for relatedFiles
  */
 export async function logActivity(activity: ActivityLog) {
   try {
-    await client.mutation(api.activities.log, activity);
-    console.log(`✅ Logged activity: ${activity.title}`);
+    // Read file contents if there are related files and no contents provided
+    let fileContents = activity.fileContents;
+    if (activity.relatedFiles && activity.relatedFiles.length > 0 && !fileContents) {
+      console.log(`📂 Reading ${activity.relatedFiles.length} related file(s)...`);
+      fileContents = readRelatedFiles(activity.relatedFiles);
+    }
+    
+    await client.mutation(api.activities.log, {
+      ...activity,
+      fileContents: fileContents && fileContents.length > 0 ? fileContents : undefined,
+    });
+    console.log(`✅ Logged activity: ${activity.title}${fileContents ? ` (with ${fileContents.length} file(s))` : ""}`);
   } catch (error) {
     console.error(`❌ Failed to log activity: ${error}`);
   }

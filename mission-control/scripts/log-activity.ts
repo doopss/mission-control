@@ -14,8 +14,7 @@
  *     --tags "backend,api"
  */
 
-import { ConvexHttpClient } from "convex/browser";
-import { api } from "../convex/_generated/api";
+import { logActivity } from "./openclaw-logger";
 
 const args = process.argv.slice(2);
 
@@ -32,14 +31,6 @@ function getArrayArg(name: string): string[] | undefined {
 }
 
 async function main() {
-  const convexUrl = process.env.NEXT_PUBLIC_CONVEX_URL;
-  if (!convexUrl) {
-    console.error("Error: NEXT_PUBLIC_CONVEX_URL not set in environment");
-    process.exit(1);
-  }
-
-  const client = new ConvexHttpClient(convexUrl);
-
   const title = getArg("title");
   const description = getArg("description");
   const category = getArg("category") || "general";
@@ -65,7 +56,8 @@ async function main() {
   }
 
   try {
-    await client.mutation(api.activities.log, {
+    // Use logActivity which will automatically read and store file contents
+    await logActivity({
       type,
       title,
       description,
@@ -76,11 +68,11 @@ async function main() {
       tags,
     });
 
-    console.log("✅ Activity logged successfully!");
     console.log(`Title: ${title}`);
     console.log(`Category: ${category}`);
     if (status) console.log(`Status: ${status}`);
     if (duration) console.log(`Duration: ${duration} minutes`);
+    if (relatedFiles) console.log(`Files: ${relatedFiles.length} file(s) stored`);
   } catch (error) {
     console.error("❌ Error logging activity:", error);
     process.exit(1);
