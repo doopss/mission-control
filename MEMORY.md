@@ -59,6 +59,20 @@ Was logging to dev, production reads from prod.
 
 ---
 
+### React Query Infinite Re-renders (Learned: Feb 9, 2026)
+**Problem:** Usage Dashboard tab had infinite loading - 2000+ renders in 15 seconds.
+
+**Root cause:** `endTime: Date.now()` passed directly to Convex query parameters.
+- Every render, `Date.now()` returned a slightly different timestamp
+- Convex saw each as a **new query** (different params)
+- Component re-rendered waiting for result → infinite loop
+
+**Solution:** Removed `endTime` from query params, let server calculate it once per query execution.
+
+**Lesson learned:** Never pass `Date.now()`, `new Date()`, or any volatile function call directly as query parameters in React. Always memoize with `useMemo(() => Date.now(), [])` or use server-side defaults. This applies to React Query, Convex, Apollo, or any reactive query system.
+
+---
+
 ### Dual Kanban System (Learned: Feb 8, 2026)
 **Problem:** I kept forgetting to update project status, leaving Alex without visibility.
 
