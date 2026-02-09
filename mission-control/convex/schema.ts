@@ -2,6 +2,21 @@ import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
 export default defineSchema({
+  // Usage Events - Track API costs and token usage
+  usageEvents: defineTable({
+    timestamp: v.number(),
+    model: v.string(), // "claude-sonnet-4", "claude-opus-4", etc.
+    tokensIn: v.number(), // Input tokens
+    tokensOut: v.number(), // Output tokens
+    cost: v.number(), // Calculated cost in USD
+    sessionId: v.optional(v.string()), // OpenClaw session ID
+    activityType: v.optional(v.string()), // "chat", "code", "research", etc.
+    metadata: v.optional(v.any()), // Additional context
+  })
+    .index("by_timestamp", ["timestamp"])
+    .index("by_model", ["model", "timestamp"])
+    .index("by_session", ["sessionId", "timestamp"]),
+
   // Activity Feed - Records every action/task completed
   activities: defineTable({
     timestamp: v.number(),

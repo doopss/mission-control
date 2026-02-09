@@ -5,6 +5,7 @@ import ActivityFeed from "@/components/ActivityFeed";
 import CalendarView from "@/components/CalendarView";
 import KanbanView from "@/components/KanbanView";
 import GlobalSearch from "@/components/GlobalSearch";
+import UsageView from "@/components/UsageView";
 import { ConvexProvider, ConvexReactClient } from "convex/react";
 
 const convex = new ConvexReactClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
@@ -18,7 +19,7 @@ export default function Home() {
 }
 
 function MissionControl() {
-  const [activeTab, setActiveTab] = useState<"feed" | "calendar" | "kanban" | "search">(
+  const [activeTab, setActiveTab] = useState<"feed" | "calendar" | "kanban" | "search" | "usage">(
     "feed"
   );
 
@@ -82,6 +83,16 @@ function MissionControl() {
               >
                 🔍 Search
               </button>
+              <button
+                onClick={() => setActiveTab("usage")}
+                className={`px-4 py-2 rounded-lg transition-colors ${
+                  activeTab === "usage"
+                    ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
+                    : "text-zinc-400 hover:text-white hover:bg-zinc-800"
+                }`}
+              >
+                💰 Usage
+              </button>
             </nav>
           </div>
         </div>
@@ -93,6 +104,7 @@ function MissionControl() {
         {activeTab === "calendar" && <CalendarView />}
         {activeTab === "kanban" && <KanbanView />}
         {activeTab === "search" && <GlobalSearch />}
+        {activeTab === "usage" && <UsageView />}
       </main>
     </div>
   );

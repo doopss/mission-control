@@ -4,6 +4,8 @@
  * 
  * Automatically logs activities from OpenClaw sessions to Mission Control dashboard
  * Can be called from OpenClaw tools or run as a background service
+ * 
+ * Also handles usage/cost tracking for API calls
  */
 
 import * as dotenv from "dotenv";
@@ -15,6 +17,7 @@ dotenv.config({ path: path.join(__dirname, "..", ".env.local") });
 import { ConvexHttpClient } from "convex/browser";
 import { api } from "../convex/_generated/api";
 import * as fs from "fs";
+import * as readline from "readline";
 
 // Always use PROD deployment for activity logging
 // Dev deployment (good-lemming-768) is for local development only
@@ -387,6 +390,190 @@ export async function logAnalysis(
   });
 }
 
+/**
+ * ==========================================
+ * USAGE TRACKING FUNCTIONS
+ * ==========================================
+ */
+
+interface UsageEvent {
+  model: string;
+  tokensIn: number;
+  tokensOut: number;
+  sessionId?: string;
+  activityType?: string;
+  metadata?: any;
+  timestamp?: number;
+}
+
+/**
+ * Log a single usage event to Mission Control
+ */
+export async function logUsage(event: UsageEvent) {
+  try {
+    await client.mutation(api.usage.logUsage, event);
+    console.log(`📊 Logged usage: ${event.model} - ${event.tokensIn}in/${event.tokensOut}out`);
+  } catch (error) {
+    console.error(`❌ Failed to log usage: ${error}`);
+  }
+}
+
+/**
+ * Log multiple usage events in batch
+ */
+export async function logUsageBatch(events: UsageEvent[]) {
+  try {
+    await client.mutation(api.usage.logUsageBatch, { events });
+    console.log(`📊 Logged ${events.length} usage events`);
+  } catch (error) {
+    console.error(`❌ Failed to log usage batch: ${error}`);
+  }
+}
+
+/**
+ * Parse a session JSONL file and extract usage data
+ */
+interface ParsedUsage {
+  model: string;
+  tokensIn: number;
+  tokensOut: number;
+  timestamp: number;
+  sessionId: string;
+}
+
+async function parseSessionJSONL(filePath: string): Promise<ParsedUsage[]> {
+  const usageEvents: ParsedUsage[] = [];
+  const sessionId = path.basename(filePath, ".jsonl");
+  
+  return new Promise((resolve, reject) => {
+    const fileStream = fs.createReadStream(filePath);
+    const rl = readline.createInterface({
+      input: fileStream,
+      crlfDelay: Infinity,
+    });
+    
+    rl.on("line", (line) => {
+      try {
+        const entry = JSON.parse(line);
+        
+        // Look for assistant messages with usage data
+        if (entry.role === "assistant" && entry.usage) {
+          const usage = entry.usage;
+          const model = entry.model || "unknown";
+          
+          usageEvents.push({
+            model,
+            tokensIn: usage.input_tokens || usage.prompt_tokens || 0,
+            tokensOut: usage.output_tokens || usage.completion_tokens || 0,
+            timestamp: entry.timestamp || Date.now(),
+            sessionId,
+          });
+        }
+        
+        // Also check for completion entries
+        if (entry.type === "completion" || entry.type === "response") {
+          const usage = entry.usage || entry.response?.usage;
+          if (usage) {
+            usageEvents.push({
+              model: entry.model || entry.response?.model || "unknown",
+              tokensIn: usage.input_tokens || usage.prompt_tokens || 0,
+              tokensOut: usage.output_tokens || usage.completion_tokens || 0,
+              timestamp: entry.timestamp || Date.now(),
+              sessionId,
+            });
+          }
+        }
+      } catch (e) {
+        // Skip invalid lines
+      }
+    });
+    
+    rl.on("close", () => resolve(usageEvents));
+    rl.on("error", reject);
+  });
+}
+
+/**
+ * Scan a directory of session files and log all usage
+ */
+export async function importUsageFromSessions(
+  sessionDir: string,
+  options: {
+    since?: number;  // Only process files modified after this timestamp
+    dryRun?: boolean;
+  } = {}
+) {
+  console.log(`🔍 Scanning sessions in ${sessionDir}...`);
+  
+  const files = fs.readdirSync(sessionDir);
+  const jsonlFiles = files.filter(f => f.endsWith(".jsonl"));
+  
+  console.log(`📁 Found ${jsonlFiles.length} session files`);
+  
+  let totalEvents = 0;
+  const allEvents: UsageEvent[] = [];
+  
+  for (const file of jsonlFiles) {
+    const filePath = path.join(sessionDir, file);
+    const stat = fs.statSync(filePath);
+    
+    // Skip files older than 'since' timestamp
+    if (options.since && stat.mtimeMs < options.since) {
+      continue;
+    }
+    
+    try {
+      const events = await parseSessionJSONL(filePath);
+      
+      if (events.length > 0) {
+        console.log(`  📄 ${file}: ${events.length} usage events`);
+        allEvents.push(...events);
+        totalEvents += events.length;
+      }
+    } catch (error) {
+      console.error(`  ❌ Error processing ${file}: ${error}`);
+    }
+  }
+  
+  console.log(`\n📊 Total events found: ${totalEvents}`);
+  
+  if (options.dryRun) {
+    console.log("🔍 Dry run - not logging to database");
+    console.log("Sample events:", allEvents.slice(0, 3));
+    return;
+  }
+  
+  if (allEvents.length > 0) {
+    // Log in batches of 100
+    for (let i = 0; i < allEvents.length; i += 100) {
+      const batch = allEvents.slice(i, i + 100);
+      await logUsageBatch(batch);
+    }
+    console.log(`✅ Logged ${allEvents.length} usage events to Mission Control`);
+  }
+}
+
+/**
+ * Get usage stats summary for CLI
+ */
+async function getUsageStats() {
+  try {
+    const stats = await client.query(api.usage.getCurrentMonthStats, {});
+    const totalCost = await client.query(api.usage.getTotalCost, {});
+    
+    console.log("\n📊 Usage Stats:");
+    console.log("================");
+    console.log(`Total Spent (All Time): $${totalCost.toFixed(2)}`);
+    console.log(`Current Month: $${stats.currentMonthCost.toFixed(2)}`);
+    console.log(`Daily Burn Rate: $${stats.dailyBurnRate.toFixed(2)}/day`);
+    console.log(`Projected Monthly: $${stats.projectedMonthly.toFixed(2)}`);
+    console.log(`Input Tokens: ${(stats.totalTokensIn / 1_000_000).toFixed(2)}M`);
+    console.log(`Output Tokens: ${(stats.totalTokensOut / 1_000_000).toFixed(2)}M`);
+  } catch (error) {
+    console.error(`❌ Failed to get usage stats: ${error}`);
+  }
+}
+
 // CLI usage
 if (require.main === module) {
   const args = process.argv.slice(2);
@@ -404,10 +591,38 @@ if (require.main === module) {
   } else if (command === "watch") {
     const sessionDir = args[1] || "/Users/alexismendez/.openclaw/agents/main/sessions";
     watchSessionTranscripts(sessionDir);
+  } else if (command === "usage") {
+    // Usage tracking commands
+    const subCommand = args[1];
+    
+    if (subCommand === "import") {
+      const sessionDir = args[2] || "/Users/alexismendez/.openclaw/agents/main/sessions";
+      const dryRun = args.includes("--dry-run");
+      importUsageFromSessions(sessionDir, { dryRun }).then(() => process.exit(0));
+    } else if (subCommand === "log") {
+      // Manual usage log: usage log <model> <tokensIn> <tokensOut> [activityType]
+      const model = args[2] || "claude-sonnet-4";
+      const tokensIn = parseInt(args[3]) || 0;
+      const tokensOut = parseInt(args[4]) || 0;
+      const activityType = args[5];
+      
+      logUsage({ model, tokensIn, tokensOut, activityType }).then(() => process.exit(0));
+    } else if (subCommand === "stats") {
+      getUsageStats().then(() => process.exit(0));
+    } else {
+      console.log("Usage tracking commands:");
+      console.log("  openclaw-logger.ts usage import [sessionDir] [--dry-run]");
+      console.log("  openclaw-logger.ts usage log <model> <tokensIn> <tokensOut> [activityType]");
+      console.log("  openclaw-logger.ts usage stats");
+      process.exit(0);
+    }
   } else {
     console.log("Usage:");
     console.log('  openclaw-logger.ts log "Title" "Description" "category"');
     console.log("  openclaw-logger.ts watch [sessionDir]");
+    console.log("  openclaw-logger.ts usage import [sessionDir] [--dry-run]");
+    console.log("  openclaw-logger.ts usage log <model> <tokensIn> <tokensOut> [activityType]");
+    console.log("  openclaw-logger.ts usage stats");
   }
 }
 
@@ -419,4 +634,8 @@ export default {
   logAnalysis,
   detectActivityType,
   watchSessionTranscripts,
+  // Usage tracking
+  logUsage,
+  logUsageBatch,
+  importUsageFromSessions,
 };

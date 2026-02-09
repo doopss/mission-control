@@ -11,8 +11,10 @@
 import type * as activities from "../activities.js";
 import type * as documents from "../documents.js";
 import type * as kanban from "../kanban.js";
+import type * as pricing from "../pricing.js";
 import type * as scheduledTasks from "../scheduledTasks.js";
 import type * as seed from "../seed.js";
+import type * as usage from "../usage.js";
 
 import type {
   ApiFromModules,
@@ -24,8 +26,10 @@ declare const fullApi: ApiFromModules<{
   activities: typeof activities;
   documents: typeof documents;
   kanban: typeof kanban;
+  pricing: typeof pricing;
   scheduledTasks: typeof scheduledTasks;
   seed: typeof seed;
+  usage: typeof usage;
 }>;
 
 /**
