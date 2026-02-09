@@ -4,11 +4,31 @@ import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useState } from "react";
 import type { Id } from "@/convex/_generated/dataModel";
+import CardDetailModal, { CardData } from "./CardDetailModal";
+
+// Convert task data to CardData for the modal
+function taskToCardData(task: any): CardData {
+  return {
+    id: task._id,
+    type: "task",
+    title: task.title,
+    description: task.description || "",
+    category: task.category,
+    timestamp: task._creationTime || task.scheduledFor,
+    status: task.status,
+    priority: task.priority,
+    relatedFiles: task.relatedFiles,
+    tags: task.tags,
+    scheduledFor: task.scheduledFor,
+    metadata: task.metadata,
+  };
+}
 
 export default function CalendarView() {
   const [currentWeekStart, setCurrentWeekStart] = useState(
     getWeekStart(new Date())
   );
+  const [selectedTask, setSelectedTask] = useState<CardData | null>(null);
 
   const weekStart = currentWeekStart.getTime();
   const weekEnd = new Date(currentWeekStart);
@@ -56,6 +76,14 @@ export default function CalendarView() {
 
   return (
     <div className="space-y-6">
+      {/* Detail Modal */}
+      {selectedTask && (
+        <CardDetailModal
+          card={selectedTask}
+          onClose={() => setSelectedTask(null)}
+        />
+      )}
+
       {/* Header with Navigation */}
       <div className="flex items-center justify-between">
         <div>
@@ -64,6 +92,7 @@ export default function CalendarView() {
           </h2>
           <p className="text-sm text-zinc-400">
             {tasks.length} scheduled task{tasks.length !== 1 ? "s" : ""}
+            <span className="text-zinc-500 ml-2">• Click any task for details</span>
           </p>
         </div>
 
@@ -134,6 +163,7 @@ export default function CalendarView() {
                       key={task._id}
                       task={task}
                       onStatusChange={handleStatusChange}
+                      onClick={() => setSelectedTask(taskToCardData(task))}
                     />
                   ))
                 )}
@@ -161,6 +191,7 @@ export default function CalendarView() {
                   key={task._id}
                   task={task}
                   onStatusChange={handleStatusChange}
+                  onClick={() => setSelectedTask(taskToCardData(task))}
                 />
               ))
           )}
@@ -173,9 +204,11 @@ export default function CalendarView() {
 function TaskCard({
   task,
   onStatusChange,
+  onClick,
 }: {
   task: any;
   onStatusChange: (taskId: Id<"scheduledTasks">, status: string) => void;
+  onClick: () => void;
 }) {
   const time = new Date(task.scheduledFor).toLocaleTimeString("en-US", {
     hour: "numeric",
@@ -190,21 +223,23 @@ function TaskCard({
 
   return (
     <div
-      className={`p-2 rounded-lg border text-xs ${
+      onClick={onClick}
+      className={`p-2 rounded-lg border text-xs cursor-pointer ${
         task.status === "completed"
           ? "bg-zinc-800/50 border-zinc-700 opacity-60"
-          : "bg-zinc-800 border-zinc-700 hover:border-zinc-600"
+          : "bg-zinc-800 border-zinc-700 hover:border-zinc-600 hover:bg-zinc-800/80"
       } transition-colors`}
     >
       <div className="flex items-start justify-between mb-1">
         <span className="font-medium text-white">{time}</span>
         <button
-          onClick={() =>
+          onClick={(e) => {
+            e.stopPropagation();
             onStatusChange(
               task._id,
               task.status === "completed" ? "pending" : "completed"
-            )
-          }
+            );
+          }}
           className={`w-4 h-4 rounded border-2 flex items-center justify-center ${
             task.status === "completed"
               ? "bg-green-500 border-green-500"
@@ -239,9 +274,11 @@ function TaskCard({
 function TaskRow({
   task,
   onStatusChange,
+  onClick,
 }: {
   task: any;
   onStatusChange: (taskId: Id<"scheduledTasks">, status: string) => void;
+  onClick: () => void;
 }) {
   const date = new Date(task.scheduledFor);
 
@@ -253,19 +290,21 @@ function TaskRow({
 
   return (
     <div
-      className={`flex items-center gap-4 p-3 rounded-lg ${
+      onClick={onClick}
+      className={`flex items-center gap-4 p-3 rounded-lg cursor-pointer ${
         task.status === "completed"
           ? "bg-zinc-800/30"
           : "bg-zinc-800 hover:bg-zinc-700"
       } transition-colors`}
     >
       <button
-        onClick={() =>
+        onClick={(e) => {
+          e.stopPropagation();
           onStatusChange(
             task._id,
             task.status === "completed" ? "pending" : "completed"
-          )
-        }
+          );
+        }}
         className={`w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 ${
           task.status === "completed"
             ? "bg-green-500 border-green-500"
@@ -312,6 +351,16 @@ function TaskRow({
       >
         {task.priority}
       </span>
+
+      <button 
+        onClick={(e) => {
+          e.stopPropagation();
+          onClick();
+        }}
+        className="text-xs text-emerald-400 hover:text-emerald-300 hover:underline"
+      >
+        Details →
+      </button>
     </div>
   );
 }

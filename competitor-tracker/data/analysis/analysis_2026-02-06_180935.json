@@ -1,0 +1,351 @@
+{
+  "generated_at": "2026-02-06T18:09:35.288929",
+  "report_date": "2026-02-06",
+  "youtube": {
+    "timestamp": "2026-02-06T18:09:35.288679",
+    "channels_analyzed": 8,
+    "top_performers": [
+      {
+        "id": "lVxGwDeYmLw",
+        "title": "The Kind Of Masculinity Women Relax Around",
+        "url": "https://www.youtube.com/watch?v=lVxGwDeYmLw",
+        "view_count": 679698,
+        "duration": 727.0,
+        "upload_date": "",
+        "channel": "Charisma on Command",
+        "channel_handle": "@Charismaoncommand",
+        "outlier_score": 4.739378726074678,
+        "vs_mean": 3.48419867423723
+      },
+      {
+        "id": "XuJsZCaTAn8",
+        "title": "This Is How You Can Look More Attractive",
+        "url": "https://www.youtube.com/watch?v=XuJsZCaTAn8",
+        "view_count": 396743,
+        "duration": 404.0,
+        "upload_date": "",
+        "channel": "Charisma on Command",
+        "channel_handle": "@Charismaoncommand",
+        "outlier_score": 2.76639821497054,
+        "vs_mean": 2.033743566426415
+      },
+      {
+        "id": "p9r4XFx5F5g",
+        "title": "6 Conversation Habits to Connect with ANYONE",
+        "url": "https://www.youtube.com/watch?v=p9r4XFx5F5g",
+        "view_count": 390132,
+        "duration": 652.0,
+        "upload_date": "",
+        "channel": "Charisma on Command",
+        "channel_handle": "@Charismaoncommand",
+        "outlier_score": 2.720301223721368,
+        "vs_mean": 1.9998549314217773
+      },
+      {
+        "id": "YAX6vZ9xi8w",
+        "title": "How Frustration Ruins Your Arguments",
+        "url": "https://www.youtube.com/watch?v=YAX6vZ9xi8w",
+        "view_count": 369335,
+        "duration": 736.0,
+        "upload_date": "",
+        "channel": "Charisma on Command",
+        "channel_handle": "@Charismaoncommand",
+        "outlier_score": 2.5752884984136943,
+        "vs_mean": 1.89324746777158
+      },
+      {
+        "id": "3r8SMMm_IkQ",
+        "title": "This Energy Is Missing In Modern\u00a0Men",
+        "url": "https://www.youtube.com/watch?v=3r8SMMm_IkQ",
+        "view_count": 312225,
+        "duration": 584.0,
+        "upload_date": "",
+        "channel": "Charisma on Command",
+        "channel_handle": "@Charismaoncommand",
+        "outlier_score": 2.1770735278736533,
+        "vs_mean": 1.6004960012589697
+      },
+      {
+        "id": "HmRhjPCHimE",
+        "title": "STOP Making This Mistake When She Asks \"How Old Are You?\"",
+        "url": "https://www.youtube.com/watch?v=HmRhjPCHimE",
+        "view_count": 249365,
+        "duration": 290.0,
+        "upload_date": "",
+        "channel": "The Attractive Man",
+        "channel_handle": "@Theattractiveman",
+        "outlier_score": 61.67058241622357,
+        "vs_mean": 11.576188884556107
+      },
+      {
+        "id": "kfLJ88EbYfc",
+        "title": "How to Attract Girls without Trying",
+        "url": "https://www.youtube.com/watch?v=kfLJ88EbYfc",
+        "view_count": 224185,
+        "duration": 618.0,
+        "upload_date": "",
+        "channel": "The Dark Needle",
+        "channel_handle": "@thedarkneedle",
+        "outlier_score": 3.69890361912933,
+        "vs_mean": 2.754181457663912
+      },
+      {
+        "id": "q7Qi65hbjiA",
+        "title": "No Woman Wants You Because You Do This",
+        "url": "https://www.youtube.com/watch?v=q7Qi65hbjiA",
+        "view_count": 223017,
+        "duration": 914.0,
+        "upload_date": "",
+        "channel": "The Dark Needle",
+        "channel_handle": "@thedarkneedle",
+        "outlier_score": 3.6796323947961094,
+        "vs_mean": 2.7398322195679135
+      },
+      {
+        "id": "43rifCa7KBM",
+        "title": "Give Her Breast ORGASMS Every Time (7 Proven Techniques That Drive Her WILD)",
+        "url": "https://www.youtube.com/watch?v=43rifCa7KBM",
+        "view_count": 163485,
+        "duration": 500.0,
+        "upload_date": "",
+        "channel": "Marni Your Personal Wingwoman",
+        "channel_handle": "@marnikinrys",
+        "outlier_score": 4.174102868522845,
+        "vs_mean": 3.400921141316558
+      },
+      {
+        "id": "05goHpSY8gw",
+        "title": "How to make small talk so fun, it's hard to end the conversation",
+        "url": "https://www.youtube.com/watch?v=05goHpSY8gw",
+        "view_count": 150820,
+        "duration": 659.0,
+        "upload_date": "",
+        "channel": "Coach Kyle Froonjian",
+        "channel_handle": "@Coach",
+        "outlier_score": 6.871853286251281,
+        "vs_mean": 4.177012032242922
+      },
+      {
+        "id": "Nl2-4qlFMok",
+        "title": "Signs a Girl is Attracted to You (But She\u2019ll Never Say It)",
+        "url": "https://www.youtube.com/watch?v=Nl2-4qlFMok",
+        "view_count": 135111,
+        "duration": 872.0,
+        "upload_date": "",
+        "channel": "The Dark Needle",
+        "channel_handle": "@thedarkneedle",
+        "outlier_score": 2.229241773018636,
+        "vs_mean": 1.6598800585517712
+      },
+      {
+        "id": "XByoawK6kfs",
+        "title": "GET Her Talking About SEX | 2 Sexual Escalation Methods That Women ACTUALLY Love",
+        "url": "https://www.youtube.com/watch?v=XByoawK6kfs",
+        "view_count": 100797,
+        "duration": 751.0,
+        "upload_date": "",
+        "channel": "Marni Your Personal Wingwoman",
+        "channel_handle": "@marnikinrys",
+        "outlier_score": 2.5735513768143696,
+        "vs_mean": 2.0968446541351504
+      },
+      {
+        "id": "rE1b1SFoa4A",
+        "title": "Afraid of talking to women? Watch this approach",
+        "url": "https://www.youtube.com/watch?v=rE1b1SFoa4A",
+        "view_count": 99731,
+        "duration": 775.0,
+        "upload_date": "",
+        "channel": "Coach Kyle Froonjian",
+        "channel_handle": "@Coach",
+        "outlier_score": 4.54407107871056,
+        "vs_mean": 2.7620845178863465
+      },
+      {
+        "id": "QJj0B_ujih4",
+        "title": "Younger Women Are Interested in Older Men (IF YOU DO THIS)",
+        "url": "https://www.youtube.com/watch?v=QJj0B_ujih4",
+        "view_count": 95529,
+        "duration": 358.0,
+        "upload_date": "",
+        "channel": "The Attractive Man",
+        "channel_handle": "@Theattractiveman",
+        "outlier_score": 23.62532459502906,
+        "vs_mean": 4.434711158152749
+      },
+      {
+        "id": "H9afVphDQnM",
+        "title": "9 Foreplay Moves Most Guys Skip (Women Need These To Get Off)",
+        "url": "https://www.youtube.com/watch?v=H9afVphDQnM",
+        "view_count": 87152,
+        "duration": 692.0,
+        "upload_date": "",
+        "channel": "Marni Your Personal Wingwoman",
+        "channel_handle": "@marnikinrys",
+        "outlier_score": 2.225166915603896,
+        "vs_mean": 1.812992502725147
+      }
+    ],
+    "channel_summaries": [
+      {
+        "channel": "The Dark Needle",
+        "handle": "@thedarkneedle",
+        "total_videos_analyzed": 20,
+        "avg_views": 81398,
+        "median_views": 60608,
+        "max_views": 224185,
+        "min_views": 31466
+      },
+      {
+        "channel": "Marni Your Personal Wingwoman",
+        "handle": "@marnikinrys",
+        "total_videos_analyzed": 20,
+        "avg_views": 48070,
+        "median_views": 39166,
+        "max_views": 163485,
+        "min_views": 10599
+      },
+      {
+        "channel": "Todd V Dating",
+        "handle": "@ToddVDating",
+        "total_videos_analyzed": 20,
+        "avg_views": 20718,
+        "median_views": 19025,
+        "max_views": 50908,
+        "min_views": 5443
+      },
+      {
+        "channel": "The Attractive Man",
+        "handle": "@Theattractiveman",
+        "total_videos_analyzed": 20,
+        "avg_views": 21541,
+        "median_views": 4043,
+        "max_views": 249365,
+        "min_views": 938
+      },
+      {
+        "channel": "Coach Kyle Froonjian",
+        "handle": "@Coach",
+        "total_videos_analyzed": 20,
+        "avg_views": 36107,
+        "median_views": 21947,
+        "max_views": 150820,
+        "min_views": 9954
+      },
+      {
+        "channel": "Charisma on Command",
+        "handle": "@Charismaoncommand",
+        "total_videos_analyzed": 20,
+        "avg_views": 195080,
+        "median_views": 143415,
+        "max_views": 679698,
+        "min_views": 39563
+      },
+      {
+        "channel": "Casey Zander",
+        "handle": "@CaseyZander",
+        "total_videos_analyzed": 20,
+        "avg_views": 22519,
+        "median_views": 21782,
+        "max_views": 46062,
+        "min_views": 3514
+      },
+      {
+        "channel": "Austin Dunham Dating",
+        "handle": "@AustinDunhamDating",
+        "total_videos_analyzed": 20,
+        "avg_views": 16908,
+        "median_views": 10777,
+        "max_views": 50201,
+        "min_views": 5860
+      }
+    ]
+  },
+  "instagram": {
+    "timestamp": "2026-02-06T18:09:35.288917",
+    "accounts_analyzed": 10,
+    "accounts": [
+      {
+        "handle": "wingman.plus",
+        "name": "Wingman Plus",
+        "url": "https://www.instagram.com/wingman.plus/",
+        "status": "partial",
+        "follower_count": "117K",
+        "posts": []
+      },
+      {
+        "handle": "shaymaxx.x",
+        "name": "Shay Maxx",
+        "url": "https://www.instagram.com/shaymaxx.x/",
+        "status": "partial",
+        "follower_count": "43K",
+        "posts": []
+      },
+      {
+        "handle": "johnkeeganlifestyle",
+        "name": "John Keegan Lifestyle",
+        "url": "https://www.instagram.com/johnkeeganlifestyle/",
+        "status": "partial",
+        "follower_count": "93K",
+        "posts": []
+      },
+      {
+        "handle": "infinitesocial",
+        "name": "Infinite Social",
+        "url": "https://www.instagram.com/infinitesocial/",
+        "status": "partial",
+        "follower_count": "274K",
+        "posts": []
+      },
+      {
+        "handle": "david_meessen",
+        "name": "David Meessen",
+        "url": "https://www.instagram.com/david_meessen/",
+        "status": "partial",
+        "follower_count": "1M",
+        "posts": []
+      },
+      {
+        "handle": "datingwithgracie",
+        "name": "Dating With Gracie",
+        "url": "https://www.instagram.com/datingwithgracie/",
+        "status": "partial",
+        "follower_count": "537K",
+        "posts": []
+      },
+      {
+        "handle": "datingbyblaine",
+        "name": "Dating By Blaine",
+        "url": "https://www.instagram.com/datingbyblaine/",
+        "status": "partial",
+        "follower_count": "692K",
+        "posts": []
+      },
+      {
+        "handle": "cristianomungioli",
+        "name": "Cristiano Mungioli",
+        "url": "https://www.instagram.com/cristianomungioli/",
+        "status": "partial",
+        "follower_count": "8,304",
+        "posts": []
+      },
+      {
+        "handle": "basedaustindunham",
+        "name": "Austin Dunham",
+        "url": "https://www.instagram.com/basedaustindunham/",
+        "status": "partial",
+        "follower_count": "176K",
+        "posts": []
+      },
+      {
+        "handle": "_erickronaldo_",
+        "name": "Erick Ronaldo",
+        "url": "https://www.instagram.com/_erickronaldo_/",
+        "status": "partial",
+        "follower_count": "1M",
+        "posts": []
+      }
+    ],
+    "note": "Instagram data is limited due to platform restrictions. Consider manual review."
+  }
+}

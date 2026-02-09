@@ -1,0 +1,33 @@
+{
+  "accounts": [
+    "infinitesocial",
+    "basedaustindunham",
+    "datingwithgracie",
+    "david_meessen",
+    "wingman.plus",
+    "datingbyblaine",
+    "_erickronaldo_",
+    "johnkeeganlifestyle",
+    "shaymaxx.x",
+    "cristianomungioli"
+  ],
+  "instagram": {
+    "username": "HueleBicho.openclaw",
+    "password": "Chicken93!"
+  },
+  "telegram": {
+    "recipient": "@benjaminseda",
+    "chatId": "1838020956"
+  },
+  "googleDrive": {
+    "account": "huelebicho.openclaw@gmail.com",
+    "folderId": "1plSnEMj8h5uOWr9oIjz7YBUnXql20pz_",
+    "folderName": "Competitor-Analysis-Tracker"
+  },
+  "settings": {
+    "daysToLookBack": 7,
+    "maxReelsPerAccount": 20,
+    "delayBetweenAccounts": 5000,
+    "delayBetweenReels": 2000
+  }
+}

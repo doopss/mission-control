@@ -1,0 +1,12 @@
+[2026-02-06 18:09:35] [DRIVE] Starting Google Drive upload...
+[2026-02-06 18:09:36] [DRIVE] Creating folder: Competitor-Analysis-Tracker
+[2026-02-06 18:09:36] [DRIVE] Using Drive folder ID: [2026-02-06 18:09:36] [DRIVE] Creating folder: Competitor-Analysis-Tracker
+[2026-02-06 18:09:36] [DRIVE] Uploading: analysis_2026-02-06.json
+[2026-02-06 18:09:37] [DRIVE] Failed to upload: analysis_2026-02-06.json
+[2026-02-06 18:15:31] [DRIVE] Starting Google Drive upload...
+[2026-02-06 18:15:31] [DRIVE] Using Drive folder ID: 1plSnEMj8h5uOWr9oIjz7YBUnXql20pz_
+[2026-02-06 18:15:31] [DRIVE] Uploading: analysis_2026-02-06.json
+[2026-02-06 18:15:32] [DRIVE] ✓ Uploaded: analysis_2026-02-06.json
+[2026-02-06 18:15:32] [DRIVE] Uploading: report_2026-02-06.txt
+[2026-02-06 18:15:33] [DRIVE] ✓ Uploaded: report_2026-02-06.txt
+[2026-02-06 18:15:33] [DRIVE] Drive upload completed

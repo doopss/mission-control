@@ -1,0 +1,65 @@
+{
+  "instagram_accounts": [
+    {
+      "name": "Infinite Social",
+      "handle": "infinitesocial",
+      "url": "https://www.instagram.com/infinitesocial/"
+    },
+    {
+      "name": "Austin Dunham",
+      "handle": "basedaustindunham",
+      "url": "https://www.instagram.com/basedaustindunham/"
+    },
+    {
+      "name": "Dating With Gracie",
+      "handle": "datingwithgracie",
+      "url": "https://www.instagram.com/datingwithgracie/"
+    },
+    {
+      "name": "David Meessen",
+      "handle": "david_meessen",
+      "url": "https://www.instagram.com/david_meessen/"
+    },
+    {
+      "name": "Wingman Plus",
+      "handle": "wingman.plus",
+      "url": "https://www.instagram.com/wingman.plus/"
+    },
+    {
+      "name": "Dating By Blaine",
+      "handle": "datingbyblaine",
+      "url": "https://www.instagram.com/datingbyblaine/"
+    },
+    {
+      "name": "Erick Ronaldo",
+      "handle": "_erickronaldo_",
+      "url": "https://www.instagram.com/_erickronaldo_/"
+    },
+    {
+      "name": "John Keegan Lifestyle",
+      "handle": "johnkeeganlifestyle",
+      "url": "https://www.instagram.com/johnkeeganlifestyle/"
+    },
+    {
+      "name": "Shay Maxx",
+      "handle": "shaymaxx.x",
+      "url": "https://www.instagram.com/shaymaxx.x/"
+    },
+    {
+      "name": "Cristiano Mungioli",
+      "handle": "cristianomungioli",
+      "url": "https://www.instagram.com/cristianomungioli/"
+    }
+  ],
+  "telegram_recipient": {
+    "username": "@benjaminseda",
+    "user_id": "1838020956"
+  },
+  "google_account": "huelebicho.openclaw@gmail.com",
+  "drive_folder": "Competitor-Analysis-Tracker",
+  "settings": {
+    "reels_lookback_days": 7,
+    "top_reels_count": 15,
+    "engagement_formula": "views * likes * comments"
+  }
+}

@@ -2,14 +2,51 @@
 
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useDebounce } from "@/hooks/useDebounce";
+import CardDetailModal, { CardData } from "./CardDetailModal";
+
+// Convert activity data to CardData for the modal
+function activityToCardData(activity: any): CardData {
+  return {
+    id: activity._id,
+    type: "activity",
+    title: activity.title,
+    description: activity.description,
+    category: activity.category,
+    timestamp: activity.timestamp,
+    status: activity.status,
+    relatedFiles: activity.relatedFiles,
+    tags: activity.tags,
+    duration: activity.duration,
+    metadata: activity.metadata,
+  };
+}
+
+// Convert task data to CardData for the modal
+function taskToCardData(task: any): CardData {
+  return {
+    id: task._id,
+    type: "task",
+    title: task.title,
+    description: task.description || "",
+    category: task.category,
+    timestamp: task._creationTime || task.scheduledFor,
+    status: task.status,
+    priority: task.priority,
+    relatedFiles: task.relatedFiles,
+    tags: task.tags,
+    scheduledFor: task.scheduledFor,
+    metadata: task.metadata,
+  };
+}
 
 export default function GlobalSearch() {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchType, setSearchType] = useState<"all" | "documents" | "tasks">(
     "all"
   );
+  const [selectedItem, setSelectedItem] = useState<CardData | null>(null);
 
   const debouncedQuery = useDebounce(searchQuery, 300);
 
@@ -64,6 +101,14 @@ export default function GlobalSearch() {
 
   return (
     <div className="space-y-6">
+      {/* Detail Modal */}
+      {selectedItem && (
+        <CardDetailModal
+          card={selectedItem}
+          onClose={() => setSelectedItem(null)}
+        />
+      )}
+
       {/* Search Header */}
       <div className="space-y-4">
         <div className="relative">
@@ -132,6 +177,7 @@ export default function GlobalSearch() {
               <span>
                 {totalResults} result{totalResults !== 1 ? "s" : ""} for "
                 {searchQuery}"
+                <span className="text-zinc-500 ml-2">• Click any result for details</span>
               </span>
             )}
           </div>
@@ -187,7 +233,12 @@ export default function GlobalSearch() {
             </h3>
             <div className="space-y-2">
               {filteredTasks.map((task) => (
-                <TaskCard key={task._id} task={task} highlight={searchQuery} />
+                <TaskCard 
+                  key={task._id} 
+                  task={task} 
+                  highlight={searchQuery}
+                  onClick={() => setSelectedItem(taskToCardData(task))}
+                />
               ))}
             </div>
           </div>
@@ -207,6 +258,7 @@ export default function GlobalSearch() {
                     key={activity._id}
                     activity={activity}
                     highlight={searchQuery}
+                    onClick={() => setSelectedItem(activityToCardData(activity))}
                   />
                 ))}
               </div>
@@ -284,7 +336,7 @@ function DocumentCard({
   );
 }
 
-function TaskCard({ task, highlight }: { task: any; highlight?: string }) {
+function TaskCard({ task, highlight, onClick }: { task: any; highlight?: string; onClick: () => void }) {
   const priorityColors = {
     high: "text-red-400",
     medium: "text-yellow-400",
@@ -292,7 +344,10 @@ function TaskCard({ task, highlight }: { task: any; highlight?: string }) {
   };
 
   return (
-    <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-4 hover:border-zinc-700 transition-colors">
+    <div 
+      onClick={onClick}
+      className="bg-zinc-900 border border-zinc-800 rounded-lg p-4 hover:border-zinc-700 hover:bg-zinc-900/80 transition-colors cursor-pointer"
+    >
       <div className="flex items-start justify-between mb-2">
         <span
           className={`text-sm font-medium ${
@@ -317,14 +372,25 @@ function TaskCard({ task, highlight }: { task: any; highlight?: string }) {
       <h4 className="text-white font-semibold mb-1">{task.title}</h4>
       <p className="text-sm text-zinc-400 mb-2">{task.description}</p>
 
-      <div className="text-xs text-zinc-500">
-        Scheduled for{" "}
-        {new Date(task.scheduledFor).toLocaleString("en-US", {
-          month: "short",
-          day: "numeric",
-          hour: "numeric",
-          minute: "2-digit",
-        })}
+      <div className="flex items-center justify-between">
+        <div className="text-xs text-zinc-500">
+          Scheduled for{" "}
+          {new Date(task.scheduledFor).toLocaleString("en-US", {
+            month: "short",
+            day: "numeric",
+            hour: "numeric",
+            minute: "2-digit",
+          })}
+        </div>
+        <button 
+          onClick={(e) => {
+            e.stopPropagation();
+            onClick();
+          }}
+          className="text-xs text-emerald-400 hover:text-emerald-300 hover:underline"
+        >
+          View details →
+        </button>
       </div>
     </div>
   );
@@ -333,12 +399,17 @@ function TaskCard({ task, highlight }: { task: any; highlight?: string }) {
 function ActivityCard({
   activity,
   highlight,
+  onClick,
 }: {
   activity: any;
   highlight?: string;
+  onClick: () => void;
 }) {
   return (
-    <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-4 hover:border-zinc-700 transition-colors">
+    <div 
+      onClick={onClick}
+      className="bg-zinc-900 border border-zinc-800 rounded-lg p-4 hover:border-zinc-700 hover:bg-zinc-900/80 transition-colors cursor-pointer"
+    >
       <div className="flex items-center gap-2 mb-2">
         <span className="px-2 py-0.5 rounded text-xs bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
           {activity.category}
@@ -346,10 +417,42 @@ function ActivityCard({
         <span className="text-xs text-zinc-500">
           {new Date(activity.timestamp).toLocaleDateString()}
         </span>
+        {activity.status && (
+          <span
+            className={`px-2 py-0.5 rounded text-xs ${
+              activity.status === "completed"
+                ? "bg-green-500/20 text-green-400"
+                : activity.status === "in_progress"
+                ? "bg-yellow-500/20 text-yellow-400"
+                : "bg-red-500/20 text-red-400"
+            }`}
+          >
+            {activity.status}
+          </span>
+        )}
       </div>
 
       <h4 className="text-white font-semibold mb-1">{activity.title}</h4>
-      <p className="text-sm text-zinc-400">{activity.description}</p>
+      <p className="text-sm text-zinc-400 mb-2">{activity.description}</p>
+      
+      <div className="flex items-center justify-between">
+        {activity.relatedFiles && activity.relatedFiles.length > 0 && (
+          <div className="flex gap-1">
+            <span className="text-xs text-zinc-500">
+              📁 {activity.relatedFiles.length} file{activity.relatedFiles.length !== 1 ? "s" : ""}
+            </span>
+          </div>
+        )}
+        <button 
+          onClick={(e) => {
+            e.stopPropagation();
+            onClick();
+          }}
+          className="text-xs text-emerald-400 hover:text-emerald-300 hover:underline ml-auto"
+        >
+          View details →
+        </button>
+      </div>
     </div>
   );
 }

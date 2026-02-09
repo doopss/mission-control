@@ -1,8 +1,9 @@
 "use client";
 
-import { useQuery, useMutation } from "convex/react";
+import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useState } from "react";
+import CardDetailModal, { CardData } from "./CardDetailModal";
 
 const categoryColors: Record<string, string> = {
   development: "bg-blue-500/20 text-blue-400 border-blue-500/30",
@@ -20,10 +21,28 @@ const categoryIcons: Record<string, string> = {
   documentation: "📝",
 };
 
+// Convert activity data to CardData for the modal
+function activityToCardData(activity: any): CardData {
+  return {
+    id: activity._id,
+    type: "activity",
+    title: activity.title,
+    description: activity.description,
+    category: activity.category,
+    timestamp: activity.timestamp,
+    status: activity.status,
+    relatedFiles: activity.relatedFiles,
+    tags: activity.tags,
+    duration: activity.duration,
+    metadata: activity.metadata,
+  };
+}
+
 export default function ActivityFeed() {
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>(
     undefined
   );
+  const [selectedActivity, setSelectedActivity] = useState<CardData | null>(null);
 
   const activities = useQuery(api.activities.list, {
     limit: 100,
@@ -44,6 +63,14 @@ export default function ActivityFeed() {
 
   return (
     <div className="space-y-6">
+      {/* Detail Modal */}
+      {selectedActivity && (
+        <CardDetailModal
+          card={selectedActivity}
+          onClose={() => setSelectedActivity(null)}
+        />
+      )}
+
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <StatCard
@@ -104,6 +131,7 @@ export default function ActivityFeed() {
       <div className="space-y-4">
         <h2 className="text-xl font-semibold text-zinc-200">
           Activity Timeline
+          <span className="text-sm text-zinc-500 ml-2 font-normal">• Click any activity for details</span>
         </h2>
 
         {activities.length === 0 ? (
@@ -114,7 +142,11 @@ export default function ActivityFeed() {
         ) : (
           <div className="space-y-3">
             {activities.map((activity) => (
-              <ActivityCard key={activity._id} activity={activity} />
+              <ActivityCard 
+                key={activity._id} 
+                activity={activity} 
+                onClick={() => setSelectedActivity(activityToCardData(activity))}
+              />
             ))}
           </div>
         )}
@@ -154,7 +186,7 @@ function StatCard({
   );
 }
 
-function ActivityCard({ activity }: { activity: any }) {
+function ActivityCard({ activity, onClick }: { activity: any; onClick: () => void }) {
   const [expanded, setExpanded] = useState(false);
 
   const date = new Date(activity.timestamp);
@@ -165,7 +197,10 @@ function ActivityCard({ activity }: { activity: any }) {
   const categoryIcon = categoryIcons[activity.category] || "📌";
 
   return (
-    <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-4 hover:border-zinc-700 transition-colors">
+    <div 
+      className="bg-zinc-900 border border-zinc-800 rounded-lg p-4 hover:border-zinc-700 hover:bg-zinc-900/80 transition-colors cursor-pointer"
+      onClick={onClick}
+    >
       <div className="flex items-start justify-between">
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-2">
@@ -237,21 +272,35 @@ function ActivityCard({ activity }: { activity: any }) {
         </div>
 
         <button
-          onClick={() => setExpanded(!expanded)}
-          className="text-zinc-500 hover:text-white transition-colors ml-4"
+          onClick={(e) => {
+            e.stopPropagation();
+            setExpanded(!expanded);
+          }}
+          className="text-zinc-500 hover:text-white transition-colors ml-4 p-1 hover:bg-zinc-800 rounded"
         >
           {expanded ? "▼" : "▶"}
         </button>
       </div>
 
-      <div className="text-xs text-zinc-600 mt-2">
-        {date.toLocaleString("en-US", {
-          month: "short",
-          day: "numeric",
-          year: "numeric",
-          hour: "2-digit",
-          minute: "2-digit",
-        })}
+      <div className="flex items-center justify-between mt-2">
+        <div className="text-xs text-zinc-600">
+          {date.toLocaleString("en-US", {
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+          })}
+        </div>
+        <button 
+          onClick={(e) => {
+            e.stopPropagation();
+            onClick();
+          }}
+          className="text-xs text-emerald-400 hover:text-emerald-300 hover:underline"
+        >
+          View details →
+        </button>
       </div>
     </div>
   );

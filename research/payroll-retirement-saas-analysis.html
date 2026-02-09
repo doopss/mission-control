@@ -1,0 +1,1950 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Payroll &amp; Retirement SaaS Analysis</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Payroll &amp; Retirement SaaS Analysis</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#payroll-retirement-account-automation-saas"
+id="toc-payroll-retirement-account-automation-saas">Payroll &amp;
+Retirement Account Automation SaaS</a>
+<ul>
+<li><a href="#market-research-feasibility-analysis"
+id="toc-market-research-feasibility-analysis">Market Research &amp;
+Feasibility Analysis</a></li>
+</ul></li>
+<li><a href="#executive-summary" id="toc-executive-summary">Executive
+Summary</a>
+<ul>
+<li><a href="#the-verdict-proceed-with-extreme-caution"
+id="toc-the-verdict-proceed-with-extreme-caution">The Verdict: Proceed
+with Extreme Caution</a></li>
+</ul></li>
+<li><a href="#market-analysis" id="toc-market-analysis">1. Market
+Analysis</a>
+<ul>
+<li><a href="#total-addressable-market-tam"
+id="toc-total-addressable-market-tam">1.1 Total Addressable Market
+(TAM)</a></li>
+<li><a href="#serviceable-addressable-market-sam"
+id="toc-serviceable-addressable-market-sam">1.2 Serviceable Addressable
+Market (SAM)</a></li>
+<li><a href="#serviceable-obtainable-market-som"
+id="toc-serviceable-obtainable-market-som">1.3 Serviceable Obtainable
+Market (SOM)</a></li>
+<li><a href="#customer-segmentation" id="toc-customer-segmentation">1.4
+Customer Segmentation</a></li>
+<li><a href="#current-solutions-pain-points"
+id="toc-current-solutions-pain-points">1.5 Current Solutions &amp; Pain
+Points</a></li>
+</ul></li>
+<li><a href="#competitive-landscape" id="toc-competitive-landscape">2.
+Competitive Landscape</a>
+<ul>
+<li><a href="#incumbent-payroll-providers"
+id="toc-incumbent-payroll-providers">2.1 Incumbent Payroll
+Providers</a></li>
+<li><a href="#retirement-recordkeepers"
+id="toc-retirement-recordkeepers">2.2 Retirement Recordkeepers</a></li>
+<li><a href="#standalone-compliance-tools"
+id="toc-standalone-compliance-tools">2.3 Standalone Compliance
+Tools</a></li>
+<li><a href="#competitive-gaps" id="toc-competitive-gaps">2.4
+Competitive Gaps</a></li>
+</ul></li>
+<li><a href="#regulatory-deep-dive" id="toc-regulatory-deep-dive">3.
+Regulatory Deep Dive</a>
+<ul>
+<li><a href="#irs-contribution-limits"
+id="toc-irs-contribution-limits">3.1 IRS Contribution Limits</a></li>
+<li><a href="#account-types-and-rules"
+id="toc-account-types-and-rules">3.2 Account Types and Rules</a></li>
+<li><a href="#secure-2.0-act-key-provisions"
+id="toc-secure-2.0-act-key-provisions">3.3 Secure 2.0 Act Key
+Provisions</a></li>
+<li><a href="#penalty-structure" id="toc-penalty-structure">3.4 Penalty
+Structure</a></li>
+<li><a href="#annual-management-burden"
+id="toc-annual-management-burden">3.5 Annual Management Burden</a></li>
+</ul></li>
+<li><a href="#technical-feasibility" id="toc-technical-feasibility">4.
+Technical Feasibility</a>
+<ul>
+<li><a href="#payroll-api-landscape" id="toc-payroll-api-landscape">4.1
+Payroll API Landscape</a></li>
+<li><a href="#integration-complexity"
+id="toc-integration-complexity">4.2 Integration Complexity</a></li>
+<li><a href="#waterfall-logic-implementation"
+id="toc-waterfall-logic-implementation">4.3 Waterfall Logic
+Implementation</a></li>
+<li><a href="#audit-trail-requirements"
+id="toc-audit-trail-requirements">4.4 Audit Trail Requirements</a></li>
+<li><a href="#security-compliance-requirements"
+id="toc-security-compliance-requirements">4.5 Security &amp; Compliance
+Requirements</a></li>
+</ul></li>
+<li><a href="#revenue-model" id="toc-revenue-model">5. Revenue Model</a>
+<ul>
+<li><a href="#pricing-strategies" id="toc-pricing-strategies">5.1
+Pricing Strategies</a></li>
+<li><a href="#comparable-saas-pricing"
+id="toc-comparable-saas-pricing">5.2 Comparable SaaS Pricing</a></li>
+<li><a href="#projected-arpu-by-segment"
+id="toc-projected-arpu-by-segment">5.3 Projected ARPU by
+Segment</a></li>
+<li><a href="#revenue-projections" id="toc-revenue-projections">5.4
+Revenue Projections</a></li>
+<li><a href="#unit-economics" id="toc-unit-economics">5.5 Unit
+Economics</a></li>
+</ul></li>
+<li><a href="#go-to-market-strategy" id="toc-go-to-market-strategy">6.
+Go-To-Market Strategy</a>
+<ul>
+<li><a href="#customer-acquisition-channels"
+id="toc-customer-acquisition-channels">6.1 Customer Acquisition
+Channels</a></li>
+<li><a href="#sales-cycle" id="toc-sales-cycle">6.2 Sales Cycle</a></li>
+<li><a href="#implementation-process"
+id="toc-implementation-process">6.3 Implementation Process</a></li>
+<li><a href="#partnership-opportunities"
+id="toc-partnership-opportunities">6.4 Partnership
+Opportunities</a></li>
+<li><a href="#marketing-positioning" id="toc-marketing-positioning">6.5
+Marketing Positioning</a></li>
+</ul></li>
+<li><a href="#build-requirements" id="toc-build-requirements">7. Build
+Requirements</a>
+<ul>
+<li><a href="#mvp-scope-6-month-roadmap"
+id="toc-mvp-scope-6-month-roadmap">7.1 MVP Scope (6-Month
+Roadmap)</a></li>
+<li><a href="#team-composition" id="toc-team-composition">7.2 Team
+Composition</a></li>
+<li><a href="#technology-stack-recommendations"
+id="toc-technology-stack-recommendations">7.3 Technology Stack
+Recommendations</a></li>
+<li><a href="#integration-priorities"
+id="toc-integration-priorities">7.4 Integration Priorities</a></li>
+<li><a href="#legalinsurance-requirements"
+id="toc-legalinsurance-requirements">7.5 Legal/Insurance
+Requirements</a></li>
+</ul></li>
+<li><a href="#risk-assessment" id="toc-risk-assessment">8. Risk
+Assessment</a>
+<ul>
+<li><a href="#regulatoryliability-risks"
+id="toc-regulatoryliability-risks">8.1 Regulatory/Liability
+Risks</a></li>
+<li><a href="#technical-risks" id="toc-technical-risks">8.2 Technical
+Risks</a></li>
+<li><a href="#market-risks" id="toc-market-risks">8.3 Market
+Risks</a></li>
+<li><a href="#resource-risks" id="toc-resource-risks">8.4 Resource
+Risks</a></li>
+<li><a href="#risk-mitigation-summary"
+id="toc-risk-mitigation-summary">8.5 Risk Mitigation Summary</a></li>
+</ul></li>
+<li><a href="#build-vs.-buy-vs.-partner"
+id="toc-build-vs.-buy-vs.-partner">9. Build vs. Buy vs. Partner</a>
+<ul>
+<li><a href="#build-from-scratch" id="toc-build-from-scratch">9.1 Build
+from Scratch</a></li>
+<li><a href="#acquisition-targets" id="toc-acquisition-targets">9.2
+Acquisition Targets</a></li>
+<li><a href="#partnership-models" id="toc-partnership-models">9.3
+Partnership Models</a></li>
+<li><a href="#white-label-opportunities"
+id="toc-white-label-opportunities">9.4 White-Label
+Opportunities</a></li>
+</ul></li>
+<li><a href="#final-recommendation" id="toc-final-recommendation">10.
+Final Recommendation</a>
+<ul>
+<li><a href="#should-you-pursue-this"
+id="toc-should-you-pursue-this">10.1 Should You Pursue This?</a></li>
+<li><a href="#if-yes-recommended-approach"
+id="toc-if-yes-recommended-approach">10.2 If Yes: Recommended
+Approach</a></li>
+<li><a href="#if-no-alternative-paths"
+id="toc-if-no-alternative-paths">10.3 If No: Alternative Paths</a></li>
+<li><a href="#comparison-to-consumer-app-opportunity"
+id="toc-comparison-to-consumer-app-opportunity">10.4 Comparison to
+Consumer App Opportunity</a></li>
+<li><a href="#key-questions-to-answer"
+id="toc-key-questions-to-answer">10.5 Key Questions to Answer</a></li>
+</ul></li>
+<li><a href="#appendix" id="toc-appendix">Appendix</a>
+<ul>
+<li><a href="#a.-key-sources" id="toc-a.-key-sources">A. Key
+Sources</a></li>
+<li><a href="#b.-glossary" id="toc-b.-glossary">B. Glossary</a></li>
+<li><a href="#c.-irs-resources" id="toc-c.-irs-resources">C. IRS
+Resources</a></li>
+</ul></li>
+</ul>
+</nav>
+<h1 id="payroll-retirement-account-automation-saas">Payroll &amp;
+Retirement Account Automation SaaS</h1>
+<h2 id="market-research-feasibility-analysis">Market Research &amp;
+Feasibility Analysis</h2>
+<p><strong>Prepared:</strong> February 7, 2026<br />
+<strong>Subject:</strong> B2B SaaS for retirement contribution
+compliance automation</p>
+<hr />
+<h1 id="executive-summary">Executive Summary</h1>
+<h2 id="the-verdict-proceed-with-extreme-caution">The Verdict: Proceed
+with Extreme Caution</h2>
+<p><strong>Recommendation:</strong> This opportunity is <strong>not
+well-suited for a small team</strong> in its full scope. However, a
+narrowly focused MVP targeting a specific niche could be viable.</p>
+<h3 id="key-findings">Key Findings</h3>
+<table>
+<thead>
+<tr>
+<th>Factor</th>
+<th>Assessment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Market Size</strong></td>
+<td>Large ($1.3T in 403b assets alone) but fragmented</td>
+</tr>
+<tr>
+<td><strong>Problem Validity</strong></td>
+<td>Real, but partially solved by incumbents</td>
+</tr>
+<tr>
+<td><strong>Competitive Moat</strong></td>
+<td>Weak - easy for incumbents to add features</td>
+</tr>
+<tr>
+<td><strong>Technical Complexity</strong></td>
+<td>High - regulatory rules change annually</td>
+</tr>
+<tr>
+<td><strong>Sales Cycle</strong></td>
+<td>Long (6-12 months for enterprise)</td>
+</tr>
+<tr>
+<td><strong>Capital Required</strong></td>
+<td>$500K-$1.5M minimum for credible MVP</td>
+</tr>
+<tr>
+<td><strong>Time to Revenue</strong></td>
+<td>18-36 months to meaningful ARR</td>
+</tr>
+<tr>
+<td><strong>Team Size Needed</strong></td>
+<td>5-8 minimum (including compliance expertise)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="the-brutal-truth">The Brutal Truth</h3>
+<p>The core problem exists but is already <strong>partially
+addressed</strong> by major payroll providers: - ADP, Paychex,
+Paylocity, and Paycom automatically cap 401k/403b contributions at IRS
+limits - Recordkeepers (TIAA, Fidelity, Vanguard) handle most compliance
+reporting - The “waterfall logic” use case (403b → 457b → 457f) is
+extremely niche</p>
+<p><strong>Bottom Line:</strong> This is a $500K+ bet with a 18-36 month
+runway before meaningful revenue, competing against well-resourced
+incumbents who can easily add these features.</p>
+<hr />
+<h1 id="market-analysis">1. Market Analysis</h1>
+<h2 id="total-addressable-market-tam">1.1 Total Addressable Market
+(TAM)</h2>
+<h3 id="retirement-plan-market-size">Retirement Plan Market Size</h3>
+<ul>
+<li><strong>Total US retirement assets:</strong> $45.8 trillion (Q2
+2025)</li>
+<li><strong>401(k) plan assets:</strong> $7.3 trillion in
+single-employer plans</li>
+<li><strong>403(b) plan assets:</strong> $1.3 trillion across 27 major
+recordkeepers</li>
+<li><strong>457(b) plan assets:</strong> ~$400 billion (estimated)</li>
+</ul>
+<h3 id="number-of-potential-customers">Number of Potential
+Customers</h3>
+<table>
+<colgroup>
+<col style="width: 39%" />
+<col style="width: 30%" />
+<col style="width: 30%" />
+</colgroup>
+<thead>
+<tr>
+<th>Segment</th>
+<th>Count</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>US employers with retirement plans</td>
+<td>~730,000</td>
+<td>BLS/DOL data</td>
+</tr>
+<tr>
+<td>Nonprofit hospitals/health systems</td>
+<td>~900</td>
+<td>Definitive Healthcare</td>
+</tr>
+<tr>
+<td>Higher education institutions</td>
+<td>~3,900</td>
+<td>NCES degree-granting</td>
+</tr>
+<tr>
+<td>State/local governments</td>
+<td>~87,000</td>
+<td>Census Bureau</td>
+</tr>
+<tr>
+<td>501(c)(3) nonprofits</td>
+<td>~1.5 million</td>
+<td>IRS registered, ~15% have plans</td>
+</tr>
+</tbody>
+</table>
+<h3 id="tam-calculation">TAM Calculation</h3>
+<p><strong>Target Market:</strong> Organizations offering both 403(b)
+AND 457(b) plans (the waterfall use case)</p>
+<p>Estimated target accounts: - Large nonprofit hospitals: ~500 - Higher
+education with both plans: ~800 - Other qualifying nonprofits:
+~2,000</p>
+<p><strong>Realistic TAM: ~3,300 organizations</strong></p>
+<p>At $500 PEPM average pricing × 500 employees average = $3M ARR
+potential per 1,000 customers</p>
+<p><strong>TAM for narrow waterfall use case: ~$10M-15M
+annually</strong></p>
+<p>This is a small market.</p>
+<h2 id="serviceable-addressable-market-sam">1.2 Serviceable Addressable
+Market (SAM)</h2>
+<p>Organizations with: - 100+ employees - Both 403(b) and 457(b) plans -
+Complex compensation (physicians, executives) - Current pain with manual
+tracking</p>
+<p><strong>SAM: ~1,000-1,500 organizations = $5-8M annually</strong></p>
+<h2 id="serviceable-obtainable-market-som">1.3 Serviceable Obtainable
+Market (SOM)</h2>
+<p>Realistic first 3 years: - Year 1: 5-10 customers = $150-300K ARR -
+Year 2: 25-50 customers = $750K-1.5M ARR - Year 3: 75-150 customers =
+$2.25-4.5M ARR</p>
+<h2 id="customer-segmentation">1.4 Customer Segmentation</h2>
+<h3 id="primary-targets">Primary Targets</h3>
+<ol type="1">
+<li><strong>Nonprofit Hospital Systems</strong>
+<ul>
+<li>Offer 403(b) + 457(b) to physicians/executives</li>
+<li>High-compensation employees with complex needs</li>
+<li>Understaffed HR/benefits teams</li>
+<li>Example: Ascension (106,000 employees), Kaiser, Sutter</li>
+</ul></li>
+<li><strong>Higher Education</strong>
+<ul>
+<li>TIAA-dominant (legacy complexity)</li>
+<li>Multiple vendor relationships</li>
+<li>15-year service catch-up rules</li>
+<li>Example: State universities, large private colleges</li>
+</ul></li>
+<li><strong>Large Nonprofits</strong>
+<ul>
+<li>Museums, foundations, research organizations</li>
+<li>Executive compensation concerns</li>
+<li>Limited benefits staff</li>
+</ul></li>
+</ol>
+<h3 id="secondary-targets">Secondary Targets</h3>
+<ol start="4" type="1">
+<li><strong>State/Local Governments</strong>
+<ul>
+<li>Governmental 457(b) plans</li>
+<li>Less complex (no 457f)</li>
+<li>More competitive market</li>
+</ul></li>
+</ol>
+<h2 id="current-solutions-pain-points">1.5 Current Solutions &amp; Pain
+Points</h2>
+<h3 id="what-exists-today">What Exists Today</h3>
+<table>
+<colgroup>
+<col style="width: 27%" />
+<col style="width: 37%" />
+<col style="width: 35%" />
+</colgroup>
+<thead>
+<tr>
+<th>Solution</th>
+<th>Capabilities</th>
+<th>Limitations</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ADP/Paychex</strong></td>
+<td>Auto-stop at 401k/403b limits</td>
+<td>No waterfall logic, no 457f</td>
+</tr>
+<tr>
+<td><strong>TIAA/Fidelity</strong></td>
+<td>Recordkeeping, compliance reports</td>
+<td>No payroll integration, reactive</td>
+</tr>
+<tr>
+<td><strong>Vestwell/Human Interest</strong></td>
+<td>Modern 401k admin</td>
+<td>Focus on SMB, no 403b/457</td>
+</tr>
+<tr>
+<td><strong>Payroll Integrations</strong></td>
+<td>Unified API for payroll-retirement</td>
+<td>Middleware only, no calculations</td>
+</tr>
+<tr>
+<td><strong>Spreadsheets</strong></td>
+<td>Manual tracking</td>
+<td>Error-prone, no real-time</td>
+</tr>
+</tbody>
+</table>
+<h3 id="key-pain-points">Key Pain Points</h3>
+<ol type="1">
+<li><strong>Mid-year compensation changes</strong> - Raises break
+contribution calculations</li>
+<li><strong>Age-based catch-ups</strong> - New 60-63 “super catch-up”
+adds complexity</li>
+<li><strong>Secure 2.0 Roth requirements</strong> - Must track $150K
+wage threshold</li>
+<li><strong>Waterfall contributions</strong> - No automated 403b → 457b
+→ 457f routing</li>
+<li><strong>Multi-employer tracking</strong> - Employees with multiple
+jobs</li>
+<li><strong>15-year catch-up</strong> - Complex eligibility
+requirements</li>
+</ol>
+<h3 id="market-readiness">Market Readiness</h3>
+<p><strong>Urgency Drivers:</strong> - Secure 2.0 Roth catch-up
+requirement effective January 1, 2026 ✓ - New 60-63 “super catch-up”
+creates confusion ✓ - IRS enforcement increasing ✓</p>
+<p><strong>Counter-factors:</strong> - Incumbents are adding compliance
+features - Pain is not acute enough for most organizations - Budgets for
+new software are tight</p>
+<hr />
+<h1 id="competitive-landscape">2. Competitive Landscape</h1>
+<h2 id="incumbent-payroll-providers">2.1 Incumbent Payroll
+Providers</h2>
+<h3 id="adp">ADP</h3>
+<ul>
+<li><strong>Market position:</strong> #1 HCM provider globally (10.8%
+market share)</li>
+<li><strong>Retirement offerings:</strong> ADP Retirement Services,
+integrated payroll</li>
+<li><strong>API:</strong> Developer portal exists, partner program
+required</li>
+<li><strong>Threat level:</strong> HIGH - could add waterfall features
+easily</li>
+<li><strong>Weakness:</strong> Complex, expensive, legacy
+technology</li>
+</ul>
+<h3 id="paychex">Paychex</h3>
+<ul>
+<li><strong>Market position:</strong> #2 in SMB payroll</li>
+<li><strong>Retirement offerings:</strong> Paychex Retirement Services
+(403b, 401k)</li>
+<li><strong>API:</strong> Developer program available</li>
+<li><strong>Threat level:</strong> HIGH - focused on retirement
+integration</li>
+<li><strong>Weakness:</strong> Less enterprise-focused</li>
+</ul>
+<h3 id="paylocitypaycom">Paylocity/Paycom</h3>
+<ul>
+<li><strong>Market position:</strong> Fast-growing mid-market</li>
+<li><strong>Retirement offerings:</strong> Integrated contribution
+tracking</li>
+<li><strong>Threat level:</strong> MEDIUM - could partner or build</li>
+<li><strong>Weakness:</strong> Less nonprofit/healthcare expertise</li>
+</ul>
+<h3 id="gustorippling">Gusto/Rippling</h3>
+<ul>
+<li><strong>Market position:</strong> Modern SMB platforms</li>
+<li><strong>Retirement offerings:</strong> 401k integration via
+partners</li>
+<li><strong>Threat level:</strong> LOW - different market segment</li>
+<li><strong>Weakness:</strong> No 403b/457 focus</li>
+</ul>
+<h2 id="retirement-recordkeepers">2.2 Retirement Recordkeepers</h2>
+<h3 id="tiaa">TIAA</h3>
+<ul>
+<li><strong>Dominance:</strong> Higher education market leader</li>
+<li><strong>Assets:</strong> $1+ trillion under management</li>
+<li><strong>Threat level:</strong> HIGH - trusted incumbent</li>
+<li><strong>Weakness:</strong> Legacy tech, slow innovation</li>
+</ul>
+<h3 id="fidelityvanguard">Fidelity/Vanguard</h3>
+<ul>
+<li><strong>Position:</strong> Growing in 403b market</li>
+<li><strong>Threat level:</strong> MEDIUM - focused on investment
+side</li>
+<li><strong>Weakness:</strong> Not compliance-first</li>
+</ul>
+<h3 id="empowerascensus">Empower/Ascensus</h3>
+<ul>
+<li><strong>Position:</strong> Third-party administrators</li>
+<li><strong>Threat level:</strong> MEDIUM - could add features</li>
+<li><strong>Weakness:</strong> Fragmented offerings</li>
+</ul>
+<h2 id="standalone-compliance-tools">2.3 Standalone Compliance
+Tools</h2>
+<h3 id="payroll-integrations">Payroll Integrations</h3>
+<ul>
+<li><strong>Focus:</strong> Unified API for payroll-to-retirement
+data</li>
+<li><strong>Pricing:</strong> Not public</li>
+<li><strong>Threat level:</strong> HIGH - directly adjacent</li>
+<li><strong>Weakness:</strong> Middleware only, no calculation
+engine</li>
+</ul>
+<h3 id="asc-actuarial-systems-corporation">ASC (Actuarial Systems
+Corporation)</h3>
+<ul>
+<li><strong>Focus:</strong> TPA software, compliance testing</li>
+<li><strong>Users:</strong> Third-party administrators</li>
+<li><strong>Threat level:</strong> LOW - different user base</li>
+<li><strong>Weakness:</strong> Not real-time, not employer-facing</li>
+</ul>
+<h3 id="plan-sponsor-software-various">Plan Sponsor software
+(various)</h3>
+<ul>
+<li><strong>Examples:</strong> Pontera, 401k Optimizer</li>
+<li><strong>Focus:</strong> Advisor tools, not employer tools</li>
+<li><strong>Threat level:</strong> LOW</li>
+</ul>
+<h2 id="competitive-gaps">2.4 Competitive Gaps</h2>
+<p><strong>Potential Differentiation:</strong></p>
+<ol type="1">
+<li><strong>Real-time waterfall routing</strong> - No one does automated
+403b → 457b → 457f</li>
+<li><strong>Secure 2.0 Roth automation</strong> - Emerging need,
+incumbents scrambling</li>
+<li><strong>Age-based catch-up logic</strong> - Complex rules not fully
+automated</li>
+<li><strong>Unified view across plans</strong> - Most track plans in
+silos</li>
+</ol>
+<p><strong>BUT:</strong> These gaps are features, not products.
+Incumbents can copy.</p>
+<hr />
+<h1 id="regulatory-deep-dive">3. Regulatory Deep Dive</h1>
+<h2 id="irs-contribution-limits">3.1 IRS Contribution Limits</h2>
+<h3 id="limits">2024-2026 Limits</h3>
+<table>
+<thead>
+<tr>
+<th>Limit Type</th>
+<th>2024</th>
+<th>2025</th>
+<th>2026</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>401k/403b/457b elective deferral</td>
+<td>$23,000</td>
+<td>$23,500</td>
+<td>$24,500</td>
+</tr>
+<tr>
+<td>Catch-up (age 50+)</td>
+<td>$7,500</td>
+<td>$7,500</td>
+<td>$8,000</td>
+</tr>
+<tr>
+<td>Super catch-up (ages 60-63)</td>
+<td>N/A</td>
+<td>$11,250</td>
+<td>$11,250</td>
+</tr>
+<tr>
+<td>Annual additions (415c)</td>
+<td>$69,000</td>
+<td>$70,000</td>
+<td>$72,000</td>
+</tr>
+<tr>
+<td>Compensation limit (401a17)</td>
+<td>$345,000</td>
+<td>$350,000</td>
+<td>$360,000</td>
+</tr>
+</tbody>
+</table>
+<h3 id="projected-2027-based-on-inflation">Projected 2027 (based on
+inflation)</h3>
+<ul>
+<li>Elective deferral: ~$25,000-$25,500</li>
+<li>Catch-up (50+): ~$8,000-$8,500</li>
+<li>Annual additions: ~$73,000-$74,000</li>
+</ul>
+<h2 id="account-types-and-rules">3.2 Account Types and Rules</h2>
+<h3 id="b-tax-sheltered-annuities">403(b) Tax-Sheltered Annuities</h3>
+<ul>
+<li><strong>Eligible employers:</strong> Public schools, 501(c)(3)
+organizations</li>
+<li><strong>Investments:</strong> Annuities and mutual funds only (CITs
+pending)</li>
+<li><strong>Special rules:</strong> 15-year catch-up for long-tenure
+employees</li>
+<li><strong>Universal availability:</strong> Must offer to all eligible
+employees</li>
+</ul>
+<h3 id="b-eligible-deferred-compensation">457(b) Eligible Deferred
+Compensation</h3>
+<ul>
+<li><strong>Government 457(b):</strong> State/local governments
+<ul>
+<li>Separate limit from 403b (can max both)</li>
+<li>3-year catch-up before retirement</li>
+<li>Funds held in trust (protected)</li>
+</ul></li>
+<li><strong>Non-governmental 457(b):</strong> Tax-exempt organizations
+<ul>
+<li>For “top-hat” highly compensated employees only</li>
+<li>Separate limit from 403b (can max both)</li>
+<li>UNFUNDED - subject to creditors</li>
+<li>Must distribute within 60 days of separation</li>
+</ul></li>
+</ul>
+<h3 id="f-ineligible-plans">457(f) Ineligible Plans</h3>
+<ul>
+<li><strong>Purpose:</strong> Exceed 457(b) limits for executives</li>
+<li><strong>No contribution limits</strong> (unlimited)</li>
+<li><strong>Taxation:</strong> On vesting, not distribution</li>
+<li><strong>Substantial risk of forfeiture required</strong></li>
+<li><strong>Subject to Section 409A rules</strong></li>
+</ul>
+<h2 id="secure-2.0-act-key-provisions">3.3 Secure 2.0 Act Key
+Provisions</h2>
+<h3 id="mandatory-roth-catch-up-effective-jan-1-2026">Mandatory Roth
+Catch-Up (Effective Jan 1, 2026)</h3>
+<ul>
+<li>Applies to participants earning &gt;$150,000 (indexed) in prior
+year</li>
+<li>ALL catch-up contributions must be Roth</li>
+<li>Applies to 401k, 403b, governmental 457(b)</li>
+<li><strong>Implementation complexity:</strong> High</li>
+</ul>
+<h3 id="super-catch-up-for-ages-60-63">Super Catch-Up for Ages
+60-63</h3>
+<ul>
+<li>$11,250 instead of $8,000 (2026)</li>
+<li>Optional for plans to adopt</li>
+<li>Increases tracking complexity</li>
+</ul>
+<h3 id="other-provisions">Other Provisions</h3>
+<ul>
+<li>Long-term part-time worker eligibility</li>
+<li>Emergency savings accounts</li>
+<li>Student loan matching</li>
+<li>Auto-enrollment mandate for new plans</li>
+</ul>
+<h2 id="penalty-structure">3.4 Penalty Structure</h2>
+<h3 id="excess-contributions">Excess Contributions</h3>
+<ul>
+<li><strong>6% excise tax</strong> annually until corrected</li>
+<li><strong>Double taxation</strong> if not corrected by April 15</li>
+<li><strong>10% early withdrawal penalty</strong> if under 59½</li>
+<li><strong>Plan disqualification risk</strong> for systemic
+failures</li>
+</ul>
+<h3 id="correction-programs">Correction Programs</h3>
+<ul>
+<li><strong>Self-correction (SCP):</strong> Minor failures, no IRS
+filing</li>
+<li><strong>Voluntary Correction (VCP):</strong> File with IRS, pay
+fee</li>
+<li><strong>Audit Closing Agreement:</strong> During IRS
+examination</li>
+</ul>
+<h3 id="employer-liability">Employer Liability</h3>
+<ul>
+<li>Fiduciary breach potential</li>
+<li>Class action risk</li>
+<li>DOL investigation</li>
+</ul>
+<h2 id="annual-management-burden">3.5 Annual Management Burden</h2>
+<p>What changes every year: 1. All contribution limits (inflation
+adjusted) 2. Compensation limits 3. Catch-up amounts 4. Phase-out ranges
+5. Testing thresholds 6. New regulatory guidance</p>
+<p><strong>Typical update timeline:</strong> IRS announces limits in
+October-November for following year</p>
+<hr />
+<h1 id="technical-feasibility">4. Technical Feasibility</h1>
+<h2 id="payroll-api-landscape">4.1 Payroll API Landscape</h2>
+<h3 id="direct-apis">Direct APIs</h3>
+<table>
+<thead>
+<tr>
+<th>Provider</th>
+<th>API Availability</th>
+<th>Access Requirements</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ADP</td>
+<td>Yes (developer.adp.com)</td>
+<td>Partner application required</td>
+</tr>
+<tr>
+<td>Paychex</td>
+<td>Yes (developer.paychex.com)</td>
+<td>Partner agreement</td>
+</tr>
+<tr>
+<td>Paylocity</td>
+<td>Limited</td>
+<td>Direct partnership only</td>
+</tr>
+<tr>
+<td>Gusto</td>
+<td>Yes (public)</td>
+<td>Developer registration</td>
+</tr>
+<tr>
+<td>Rippling</td>
+<td>Yes (limited)</td>
+<td>Partner program</td>
+</tr>
+<tr>
+<td>Workday</td>
+<td>Yes</td>
+<td>Enterprise partnership</td>
+</tr>
+</tbody>
+</table>
+<h3 id="unified-api-providers">Unified API Providers</h3>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Provider</th>
+<th>Coverage</th>
+<th>Best For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Finch</strong></td>
+<td>200+ systems</td>
+<td>Read access, employee data</td>
+</tr>
+<tr>
+<td><strong>Payroll Integrations</strong></td>
+<td>Retirement-specific</td>
+<td>Payroll-to-recordkeeper</td>
+</tr>
+<tr>
+<td><strong>Merge</strong></td>
+<td>HR/payroll focus</td>
+<td>Multiple categories</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Recommendation:</strong> Start with Finch for broad coverage,
+build direct integrations for top 3 providers later.</p>
+<h2 id="integration-complexity">4.2 Integration Complexity</h2>
+<h3 id="data-requirements">Data Requirements</h3>
+<ul>
+<li>Employee demographics (name, DOB, SSN)</li>
+<li>Compensation (YTD, projected annual)</li>
+<li>Current contributions (all plan types)</li>
+<li>Employment history (for 15-year catch-up)</li>
+<li>Separation dates (for 457b distribution)</li>
+</ul>
+<h3 id="data-flow-architecture">Data Flow Architecture</h3>
+<pre><code>┌─────────────┐     ┌──────────────┐     ┌─────────────┐
+│   Payroll   │────▶│  Calculation │────▶│ Recordkeeper│
+│   System    │◀────│    Engine    │◀────│   Systems   │
+└─────────────┘     └──────────────┘     └─────────────┘
+                           │
+                    ┌──────┴──────┐
+                    │  Employer   │
+                    │  Dashboard  │
+                    └─────────────┘</code></pre>
+<h3 id="real-time-challenges">Real-Time Challenges</h3>
+<ul>
+<li>Payroll data often batch (not real-time)</li>
+<li>Recordkeeper updates delayed 1-3 days</li>
+<li>Mid-pay-period changes complex</li>
+<li>Retroactive corrections needed</li>
+</ul>
+<h2 id="waterfall-logic-implementation">4.3 Waterfall Logic
+Implementation</h2>
+<h3 id="algorithm-complexity">Algorithm Complexity</h3>
+<pre><code>For each payroll:
+  1. Calculate YTD contributions (all plans, all employers)
+  2. Determine age-based catch-up eligibility
+  3. Check prior-year wages for Roth requirement
+  4. Calculate remaining 403b room
+  5. If 403b maxed → route to 457b
+  6. If 457b maxed → route to 457f
+  7. Apply employer contribution limits
+  8. Handle mid-year compensation changes
+  9. Reproject for year-end accuracy</code></pre>
+<h3 id="edge-cases">Edge Cases</h3>
+<ul>
+<li>Employee turns 50/60/64 mid-year</li>
+<li>Compensation decrease mid-year</li>
+<li>Leave of absence</li>
+<li>Prior-employer contributions</li>
+<li>Roth vs. pre-tax splits</li>
+<li>Employer true-up contributions</li>
+</ul>
+<p><strong>Estimate:</strong> 3-6 months of engineering for core logic,
+ongoing maintenance for rule changes.</p>
+<h2 id="audit-trail-requirements">4.4 Audit Trail Requirements</h2>
+<ul>
+<li>Full history of all calculations</li>
+<li>Change logs with timestamps</li>
+<li>User actions recorded</li>
+<li>Integration sync status</li>
+<li>Error logs and alerts</li>
+<li>Annual archive for 7+ years</li>
+</ul>
+<h2 id="security-compliance-requirements">4.5 Security &amp; Compliance
+Requirements</h2>
+<h3 id="mandatory">Mandatory</h3>
+<ul>
+<li><strong>SOC 2 Type II:</strong> Required for enterprise sales
+<ul>
+<li>Cost: $20,000-$80,000 first year</li>
+<li>Timeline: 6-12 months</li>
+</ul></li>
+<li><strong>Data encryption:</strong> At rest and in transit</li>
+<li><strong>Access controls:</strong> Role-based, audit logged</li>
+<li><strong>PII handling:</strong> SSN, DOB, compensation data</li>
+</ul>
+<h3 id="recommended">Recommended</h3>
+<ul>
+<li><strong>HIPAA considerations:</strong> For healthcare clients</li>
+<li><strong>State privacy laws:</strong> California, others</li>
+<li><strong>Penetration testing:</strong> Annual minimum</li>
+</ul>
+<hr />
+<h1 id="revenue-model">5. Revenue Model</h1>
+<h2 id="pricing-strategies">5.1 Pricing Strategies</h2>
+<h3 id="option-a-per-employee-per-month-pepm">Option A: Per-Employee Per
+Month (PEPM)</h3>
+<ul>
+<li>Industry standard for HR software</li>
+<li><strong>Range:</strong> $2-10 PEPM for compliance add-ons</li>
+<li><strong>Pros:</strong> Scales with customer, predictable</li>
+<li><strong>Cons:</strong> Pushback from large employers</li>
+</ul>
+<h3 id="option-b-flat-monthly-fee-pepm">Option B: Flat Monthly Fee +
+PEPM</h3>
+<ul>
+<li>Base fee covers fixed costs</li>
+<li>PEPM for variable</li>
+<li><strong>Example:</strong> $500/month base + $3 PEPM</li>
+</ul>
+<h3 id="option-c-tiered-by-employee-count">Option C: Tiered by Employee
+Count</h3>
+<ul>
+<li>&lt;100 employees: $500/month</li>
+<li>100-500: $1,500/month</li>
+<li>500-2,000: $3,500/month</li>
+<li>2,000+: Custom</li>
+</ul>
+<h3 id="option-d-per-plan-fee">Option D: Per-Plan Fee</h3>
+<ul>
+<li>$X per retirement plan administered</li>
+<li>Better for organizations with many plans</li>
+</ul>
+<p><strong>Recommendation:</strong> Option B or C - provides stable base
+with scaling</p>
+<h2 id="comparable-saas-pricing">5.2 Comparable SaaS Pricing</h2>
+<table>
+<thead>
+<tr>
+<th>Product</th>
+<th>Pricing Model</th>
+<th>Range</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Gusto</td>
+<td>Base + PEPM</td>
+<td>$40 + $6 PEPM</td>
+</tr>
+<tr>
+<td>Rippling</td>
+<td>PEPM</td>
+<td>$15-50 PEPM</td>
+</tr>
+<tr>
+<td>Justworks</td>
+<td>PEPM</td>
+<td>$59-99 PEPM</td>
+</tr>
+<tr>
+<td>Human Interest</td>
+<td>Assets + PEPM</td>
+<td>0.5% AUM + fees</td>
+</tr>
+<tr>
+<td>Vestwell</td>
+<td>Base + PEPM</td>
+<td>$1,200/yr + $4-8 PEPM</td>
+</tr>
+</tbody>
+</table>
+<h2 id="projected-arpu-by-segment">5.3 Projected ARPU by Segment</h2>
+<table>
+<thead>
+<tr>
+<th>Segment</th>
+<th>Avg Employees</th>
+<th>Monthly Price</th>
+<th>ARPU/Year</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Small nonprofit (100-500)</td>
+<td>300</td>
+<td>$1,500</td>
+<td>$18,000</td>
+</tr>
+<tr>
+<td>Mid hospital (500-2,000)</td>
+<td>1,200</td>
+<td>$5,000</td>
+<td>$60,000</td>
+</tr>
+<tr>
+<td>Large health system (2,000+)</td>
+<td>5,000</td>
+<td>$15,000</td>
+<td>$180,000</td>
+</tr>
+<tr>
+<td>Higher ed (1,000-5,000)</td>
+<td>2,500</td>
+<td>$7,500</td>
+<td>$90,000</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Blended ARPU target:</strong> $40,000-$60,000 annually</p>
+<h2 id="revenue-projections">5.4 Revenue Projections</h2>
+<h3 id="conservative-scenario">Conservative Scenario</h3>
+<table>
+<thead>
+<tr>
+<th>Year</th>
+<th>Customers</th>
+<th>Avg ARPU</th>
+<th>ARR</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>8</td>
+<td>$30,000</td>
+<td>$240,000</td>
+</tr>
+<tr>
+<td>2</td>
+<td>35</td>
+<td>$40,000</td>
+<td>$1,400,000</td>
+</tr>
+<tr>
+<td>3</td>
+<td>100</td>
+<td>$50,000</td>
+<td>$5,000,000</td>
+</tr>
+</tbody>
+</table>
+<h3 id="aggressive-scenario">Aggressive Scenario</h3>
+<table>
+<thead>
+<tr>
+<th>Year</th>
+<th>Customers</th>
+<th>Avg ARPU</th>
+<th>ARR</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>15</td>
+<td>$35,000</td>
+<td>$525,000</td>
+</tr>
+<tr>
+<td>2</td>
+<td>60</td>
+<td>$45,000</td>
+<td>$2,700,000</td>
+</tr>
+<tr>
+<td>3</td>
+<td>180</td>
+<td>$55,000</td>
+<td>$9,900,000</td>
+</tr>
+</tbody>
+</table>
+<h2 id="unit-economics">5.5 Unit Economics</h2>
+<h3 id="customer-acquisition-cost-cac">Customer Acquisition Cost
+(CAC)</h3>
+<ul>
+<li>B2B HR/benefits SaaS: $410-$6,754 depending on segment</li>
+<li><strong>Assumed CAC:</strong> $8,000-$15,000 for enterprise
+nonprofit</li>
+<li><strong>CAC Payback:</strong> 3-6 months at target ARPU</li>
+</ul>
+<h3 id="lifetime-value-ltv">Lifetime Value (LTV)</h3>
+<ul>
+<li><strong>Churn assumption:</strong> 5-10% annually (sticky
+category)</li>
+<li><strong>Customer lifetime:</strong> 10-20 years</li>
+<li><strong>LTV:</strong> $400,000-$1,200,000</li>
+<li><strong>LTV:CAC ratio:</strong> 30-80x (excellent if achieved)</li>
+</ul>
+<h3 id="gross-margin">Gross Margin</h3>
+<ul>
+<li>SaaS benchmark: 70-80%</li>
+<li><strong>Estimated:</strong> 75% (API costs, compliance staff)</li>
+</ul>
+<hr />
+<h1 id="go-to-market-strategy">6. Go-To-Market Strategy</h1>
+<h2 id="customer-acquisition-channels">6.1 Customer Acquisition
+Channels</h2>
+<h3 id="primary-channels">Primary Channels</h3>
+<ol type="1">
+<li><strong>Consultant/TPA Partnerships</strong>
+<ul>
+<li>Benefits consultants advise on retirement plans</li>
+<li>Third-party administrators (TPAs) manage compliance</li>
+<li>Referral fees or revenue share model</li>
+<li><strong>Effort:</strong> HIGH (relationship building)</li>
+<li><strong>Potential:</strong> HIGH</li>
+</ul></li>
+<li><strong>Industry Conferences</strong>
+<ul>
+<li>SHRM (HR professionals)</li>
+<li>PLANSPONSOR conferences</li>
+<li>HFMA (Healthcare Finance)</li>
+<li>NACUBO (Higher Ed Finance)</li>
+<li><strong>Cost:</strong> $10,000-$50,000 per event</li>
+<li><strong>Potential:</strong> MEDIUM (long sales cycle)</li>
+</ul></li>
+<li><strong>Content Marketing/SEO</strong>
+<ul>
+<li>“Secure 2.0 compliance guide”</li>
+<li>“403b vs 457b calculator”</li>
+<li>“Catch-up contribution rules 2026”</li>
+<li><strong>Cost:</strong> $3,000-$10,000/month</li>
+<li><strong>Potential:</strong> MEDIUM-HIGH</li>
+</ul></li>
+<li><strong>Webinars/Education</strong>
+<ul>
+<li>Partner with industry associations</li>
+<li>CPE/SHRM credits</li>
+<li><strong>Cost:</strong> $2,000-$5,000 per webinar</li>
+<li><strong>Potential:</strong> MEDIUM</li>
+</ul></li>
+</ol>
+<h3 id="secondary-channels">Secondary Channels</h3>
+<ol start="5" type="1">
+<li><strong>Payroll Provider Partnerships</strong>
+<ul>
+<li>Integration marketplace listing</li>
+<li>Co-marketing agreements</li>
+<li><strong>Challenge:</strong> They could build it themselves</li>
+</ul></li>
+<li><strong>Outbound Sales</strong>
+<ul>
+<li>Target list of ideal customers</li>
+<li>SDR/AE team</li>
+<li><strong>CAC:</strong> High ($10,000-$20,000)</li>
+</ul></li>
+</ol>
+<h2 id="sales-cycle">6.2 Sales Cycle</h2>
+<h3 id="expected-timeline">Expected Timeline</h3>
+<ul>
+<li><strong>Initial contact to demo:</strong> 2-4 weeks</li>
+<li><strong>Demo to pilot:</strong> 4-8 weeks</li>
+<li><strong>Pilot to contract:</strong> 4-12 weeks</li>
+<li><strong>Contract to implementation:</strong> 4-8 weeks</li>
+</ul>
+<p><strong>Total:</strong> 4-8 months typical</p>
+<h3 id="decision-makers">Decision Makers</h3>
+<ul>
+<li>VP/Director of Human Resources</li>
+<li>Benefits Manager</li>
+<li>CFO/Controller (for larger deals)</li>
+<li>Legal/Compliance (for 457f involvement)</li>
+</ul>
+<h3 id="procurement-challenges">Procurement Challenges</h3>
+<ul>
+<li>RFP processes at large organizations</li>
+<li>Security questionnaires</li>
+<li>Legal review of contracts</li>
+<li>IT integration approval</li>
+<li>Budget cycles (often annual)</li>
+</ul>
+<h2 id="implementation-process">6.3 Implementation Process</h2>
+<ol type="1">
+<li><strong>Discovery</strong> (Week 1-2)
+<ul>
+<li>Current plan structures</li>
+<li>Payroll system assessment</li>
+<li>Data mapping</li>
+</ul></li>
+<li><strong>Integration Setup</strong> (Week 2-4)
+<ul>
+<li>API connections</li>
+<li>Data validation</li>
+<li>Historical import</li>
+</ul></li>
+<li><strong>Configuration</strong> (Week 3-5)
+<ul>
+<li>Plan rules entry</li>
+<li>Contribution formulas</li>
+<li>Notification settings</li>
+</ul></li>
+<li><strong>Testing</strong> (Week 4-6)
+<ul>
+<li>Parallel run with existing process</li>
+<li>Edge case validation</li>
+<li>User acceptance testing</li>
+</ul></li>
+<li><strong>Go-Live</strong> (Week 6-8)
+<ul>
+<li>Training</li>
+<li>Cutover</li>
+<li>Support handoff</li>
+</ul></li>
+</ol>
+<h2 id="partnership-opportunities">6.4 Partnership Opportunities</h2>
+<h3 id="tier-1-strategic">Tier 1: Strategic</h3>
+<ul>
+<li><strong>TIAA:</strong> Dominant in higher ed, could white-label</li>
+<li><strong>Fidelity/Vanguard:</strong> Growing 403b presence</li>
+<li><strong>ADP:</strong> Integration partner potential</li>
+</ul>
+<h3 id="tier-2-distribution">Tier 2: Distribution</h3>
+<ul>
+<li><strong>Benefits brokers:</strong> Mercer, Aon, WTW</li>
+<li><strong>TPAs:</strong> Ascensus, Principal, Transamerica</li>
+<li><strong>Consultants:</strong> Cammack, CAPTRUST</li>
+</ul>
+<h3 id="tier-3-technology">Tier 3: Technology</h3>
+<ul>
+<li><strong>Finch:</strong> Unified payroll API</li>
+<li><strong>Payroll Integrations:</strong> Retirement data
+specialist</li>
+</ul>
+<h2 id="marketing-positioning">6.5 Marketing Positioning</h2>
+<h3 id="messaging-options">Messaging Options</h3>
+<p><strong>Option A: Compliance Fear</strong> &gt; “Avoid $100K+
+penalties from contribution limit errors” - Plays on fear of IRS - Risk:
+Can feel negative</p>
+<p><strong>Option B: Efficiency Savings</strong> &gt; “Save 100+ hours
+per year on retirement compliance” - Positive ROI message -
+Quantifiable</p>
+<p><strong>Option C: Employee Benefit</strong> &gt; “Help your employees
+maximize retirement savings” - Mission-aligned for nonprofits -
+Differentiated</p>
+<p><strong>Recommendation:</strong> Lead with Option B, support with
+A</p>
+<hr />
+<h1 id="build-requirements">7. Build Requirements</h1>
+<h2 id="mvp-scope-6-month-roadmap">7.1 MVP Scope (6-Month Roadmap)</h2>
+<h3 id="month-1-2-foundation">Month 1-2: Foundation</h3>
+<ul>
+<li>Core contribution calculation engine</li>
+<li>Basic employer dashboard</li>
+<li>User authentication/authorization</li>
+<li>Database schema</li>
+</ul>
+<h3 id="month-3-4-integration">Month 3-4: Integration</h3>
+<ul>
+<li>Finch API integration (payroll data)</li>
+<li>Manual data upload fallback</li>
+<li>Employee data sync</li>
+<li>Basic notifications</li>
+</ul>
+<h3 id="month-5-6-polish">Month 5-6: Polish</h3>
+<ul>
+<li>Reporting (YTD, projections)</li>
+<li>Alert system</li>
+<li>Audit trail</li>
+<li>User documentation</li>
+<li>Security hardening</li>
+</ul>
+<h3 id="out-of-mvp-scope">Out of MVP Scope</h3>
+<ul>
+<li>457f logic (complex, niche)</li>
+<li>Multiple payroll system support</li>
+<li>Custom integrations</li>
+<li>Mobile app</li>
+<li>Advanced analytics</li>
+</ul>
+<h2 id="team-composition">7.2 Team Composition</h2>
+<h3 id="minimum-viable-team-5-6-people">Minimum Viable Team (5-6
+people)</h3>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Count</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Founder/CEO</td>
+<td>1</td>
+<td>Sales, strategy, fundraising</td>
+</tr>
+<tr>
+<td>Full-stack Engineer</td>
+<td>2</td>
+<td>Core product development</td>
+</tr>
+<tr>
+<td>Product Manager</td>
+<td>0.5</td>
+<td>Could be founder initially</td>
+</tr>
+<tr>
+<td>Compliance Expert</td>
+<td>1</td>
+<td>ERISA/IRS expertise (can be consultant)</td>
+</tr>
+<tr>
+<td>Sales/Customer Success</td>
+<td>1</td>
+<td>Once product ready</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Total:</strong> 5-6 FTEs + contractors</p>
+<h3 id="ideal-team-8-10-people">Ideal Team (8-10 people)</h3>
+<ul>
+<li>+1 Backend/API engineer</li>
+<li>+1 Dedicated security engineer</li>
+<li>+1 Marketing/content</li>
+<li>+1 Additional sales rep</li>
+</ul>
+<h2 id="technology-stack-recommendations">7.3 Technology Stack
+Recommendations</h2>
+<h3 id="backend">Backend</h3>
+<ul>
+<li><strong>Language:</strong> Python or Node.js (rapid
+development)</li>
+<li><strong>Framework:</strong> FastAPI or Express</li>
+<li><strong>Database:</strong> PostgreSQL (ACID compliance
+critical)</li>
+<li><strong>Queue:</strong> Redis/Celery for async processing</li>
+</ul>
+<h3 id="frontend">Frontend</h3>
+<ul>
+<li><strong>Framework:</strong> React or Vue</li>
+<li><strong>Styling:</strong> Tailwind CSS</li>
+<li><strong>Charting:</strong> Recharts or Chart.js</li>
+</ul>
+<h3 id="infrastructure">Infrastructure</h3>
+<ul>
+<li><strong>Cloud:</strong> AWS or GCP</li>
+<li><strong>Monitoring:</strong> Datadog or New Relic</li>
+<li><strong>Error tracking:</strong> Sentry</li>
+<li><strong>CI/CD:</strong> GitHub Actions</li>
+</ul>
+<h3 id="third-party-services">Third-Party Services</h3>
+<ul>
+<li><strong>Payroll data:</strong> Finch</li>
+<li><strong>Authentication:</strong> Auth0 or Clerk</li>
+<li><strong>Notifications:</strong> SendGrid, Twilio</li>
+</ul>
+<h2 id="integration-priorities">7.4 Integration Priorities</h2>
+<h3 id="phase-1-mvp">Phase 1 (MVP)</h3>
+<ol type="1">
+<li><strong>Finch</strong> - Covers 200+ payroll systems</li>
+<li><strong>Manual upload</strong> - CSV fallback</li>
+</ol>
+<h3 id="phase-2-post-mvp">Phase 2 (Post-MVP)</h3>
+<ol type="1">
+<li><strong>ADP direct</strong> - Largest market share</li>
+<li><strong>Paychex direct</strong> - #2 player</li>
+</ol>
+<h3 id="phase-3-scale">Phase 3 (Scale)</h3>
+<ol type="1">
+<li><strong>Workday</strong> - Enterprise segment</li>
+<li><strong>Recordkeeper APIs</strong> - TIAA, Fidelity</li>
+</ol>
+<h2 id="legalinsurance-requirements">7.5 Legal/Insurance
+Requirements</h2>
+<h3 id="essential">Essential</h3>
+<ul>
+<li><strong>General liability:</strong> $1M+ coverage</li>
+<li><strong>E&amp;O/Professional liability:</strong> $1-2M (Tech
+E&amp;O)
+<ul>
+<li>Cost: ~$67-200/month</li>
+</ul></li>
+<li><strong>Cyber liability:</strong> $1M+</li>
+<li><strong>Directors &amp; Officers:</strong> If taking investment</li>
+</ul>
+<h3 id="legal-setup">Legal Setup</h3>
+<ul>
+<li><strong>Terms of Service:</strong> Limit liability for calculation
+errors</li>
+<li><strong>Privacy Policy:</strong> GDPR/CCPA compliant</li>
+<li><strong>Business Associate Agreement:</strong> For HIPAA
+clients</li>
+<li><strong>Customer contracts:</strong> Legal review required</li>
+</ul>
+<h3 id="compliance">Compliance</h3>
+<ul>
+<li><strong>SOC 2 Type I</strong> within 12 months</li>
+<li><strong>SOC 2 Type II</strong> within 24 months</li>
+<li><strong>Penetration testing</strong> annually</li>
+</ul>
+<hr />
+<h1 id="risk-assessment">8. Risk Assessment</h1>
+<h2 id="regulatoryliability-risks">8.1 Regulatory/Liability Risks</h2>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 15%" />
+<col style="width: 31%" />
+<col style="width: 21%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Likelihood</th>
+<th>Impact</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Calculation error causes over-contribution</td>
+<td>MEDIUM</td>
+<td>HIGH</td>
+<td>Extensive testing, insurance, liability caps</td>
+</tr>
+<tr>
+<td>IRS rule changes break logic</td>
+<td>HIGH</td>
+<td>MEDIUM</td>
+<td>Annual review process, rapid update capability</td>
+</tr>
+<tr>
+<td>New Secure 2.0 guidance changes requirements</td>
+<td>HIGH</td>
+<td>MEDIUM</td>
+<td>Monitor IRS guidance, flexible architecture</td>
+</tr>
+<tr>
+<td>Customer blames software for their error</td>
+<td>MEDIUM</td>
+<td>MEDIUM</td>
+<td>Clear ToS, audit trails, training</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Liability Concern:</strong> If your software miscalculates
+and an employee over-contributes, who is liable? -
+<strong>Mitigation:</strong> Clear ToS disclaiming guarantee, E&amp;O
+insurance, limit liability to subscription fees</p>
+<h2 id="technical-risks">8.2 Technical Risks</h2>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 15%" />
+<col style="width: 31%" />
+<col style="width: 21%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Likelihood</th>
+<th>Impact</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Finch API reliability issues</td>
+<td>MEDIUM</td>
+<td>HIGH</td>
+<td>Direct integrations as backup</td>
+</tr>
+<tr>
+<td>Payroll provider API changes</td>
+<td>MEDIUM</td>
+<td>MEDIUM</td>
+<td>Version monitoring, quick response</td>
+</tr>
+<tr>
+<td>Data sync delays cause issues</td>
+<td>MEDIUM</td>
+<td>MEDIUM</td>
+<td>Clear SLAs, manual override options</td>
+</tr>
+<tr>
+<td>Security breach</td>
+<td>LOW</td>
+<td>CRITICAL</td>
+<td>SOC 2, encryption, monitoring</td>
+</tr>
+</tbody>
+</table>
+<h2 id="market-risks">8.3 Market Risks</h2>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 15%" />
+<col style="width: 31%" />
+<col style="width: 21%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Likelihood</th>
+<th>Impact</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ADP/Paychex builds competitive feature</td>
+<td>HIGH</td>
+<td>CRITICAL</td>
+<td>Move fast, target niches they ignore</td>
+</tr>
+<tr>
+<td>Sales cycles longer than expected</td>
+<td>HIGH</td>
+<td>HIGH</td>
+<td>Plan for 12+ month cycles, bridge financing</td>
+</tr>
+<tr>
+<td>Market smaller than estimated</td>
+<td>MEDIUM</td>
+<td>HIGH</td>
+<td>Validate with pilots before scaling</td>
+</tr>
+<tr>
+<td>Economic downturn reduces budgets</td>
+<td>MEDIUM</td>
+<td>MEDIUM</td>
+<td>Prove ROI, focus on cost savings</td>
+</tr>
+</tbody>
+</table>
+<h2 id="resource-risks">8.4 Resource Risks</h2>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 15%" />
+<col style="width: 31%" />
+<col style="width: 21%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Likelihood</th>
+<th>Impact</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Funding runs out before revenue</td>
+<td>MEDIUM</td>
+<td>CRITICAL</td>
+<td>Conservative burn, milestone-based raises</td>
+</tr>
+<tr>
+<td>Can’t hire compliance expert</td>
+<td>MEDIUM</td>
+<td>HIGH</td>
+<td>Use consultants, partner with TPA</td>
+</tr>
+<tr>
+<td>Key engineer leaves</td>
+<td>MEDIUM</td>
+<td>HIGH</td>
+<td>Documentation, equity vesting</td>
+</tr>
+<tr>
+<td>Founder burnout</td>
+<td>MEDIUM</td>
+<td>HIGH</td>
+<td>Realistic timeline, support system</td>
+</tr>
+</tbody>
+</table>
+<h2 id="risk-mitigation-summary">8.5 Risk Mitigation Summary</h2>
+<p><strong>Critical risks to address:</strong> 1. <strong>Incumbent
+response</strong> - This is the #1 killer. Differentiate hard. 2.
+<strong>Liability</strong> - Get insurance, limit contractually, test
+extensively. 3. <strong>Sales cycle</strong> - Plan for 18-24 months to
+meaningful revenue. 4. <strong>Capital</strong> - Need $500K-$1.5M
+runway minimum.</p>
+<hr />
+<h1 id="build-vs.-buy-vs.-partner">9. Build vs. Buy vs. Partner</h1>
+<h2 id="build-from-scratch">9.1 Build from Scratch</h2>
+<p><strong>Pros:</strong> - Full control over roadmap - Custom for
+target market - Equity upside</p>
+<p><strong>Cons:</strong> - 18-36 month timeline - $500K-$1.5M+ cost -
+High execution risk - No existing customer base</p>
+<p><strong>Verdict:</strong> Only if you have significant runway and
+strong team</p>
+<h2 id="acquisition-targets">9.2 Acquisition Targets</h2>
+<h3 id="potential-acqui-hiresassets">Potential Acqui-hires/Assets</h3>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 25%" />
+<col style="width: 40%" />
+</colgroup>
+<thead>
+<tr>
+<th>Company</th>
+<th>Notes</th>
+<th>Challenge</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Small TPA firms</td>
+<td>Have compliance expertise, customer base</td>
+<td>Technology usually poor</td>
+</tr>
+<tr>
+<td>Compliance consultants</td>
+<td>Domain expertise</td>
+<td>No product</td>
+</tr>
+<tr>
+<td>Failed fintech startups</td>
+<td>Technology, team</td>
+<td>Wrong product</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Reality:</strong> There’s no obvious acquisition target in
+this space. Most compliance tools are built into larger platforms.</p>
+<h2 id="partnership-models">9.3 Partnership Models</h2>
+<h3 id="option-a-payroll-provider-add-on">Option A: Payroll Provider
+Add-On</h3>
+<ul>
+<li>Partner with ADP/Paychex as integration</li>
+<li><strong>Pros:</strong> Distribution, credibility</li>
+<li><strong>Cons:</strong> Dependent on partner, margin compression</li>
+</ul>
+<h3 id="option-b-recordkeeper-white-label">Option B: Recordkeeper
+White-Label</h3>
+<ul>
+<li>Build for TIAA/Fidelity to offer clients</li>
+<li><strong>Pros:</strong> Built-in distribution</li>
+<li><strong>Cons:</strong> White-label = low margin, no brand</li>
+</ul>
+<h3 id="option-c-tpa-software">Option C: TPA Software</h3>
+<ul>
+<li>Sell to TPAs who serve employers</li>
+<li><strong>Pros:</strong> B2B2B leverage</li>
+<li><strong>Cons:</strong> TPA market fragmented</li>
+</ul>
+<h3 id="option-d-benefits-consultant-tool">Option D: Benefits Consultant
+Tool</h3>
+<ul>
+<li>Arm consultants with better tech</li>
+<li><strong>Pros:</strong> Trusted advisors drive adoption</li>
+<li><strong>Cons:</strong> Consultants are slow adopters</li>
+</ul>
+<p><strong>Recommendation:</strong> Pursue Option D as GTM strategy
+while building Option A capability</p>
+<h2 id="white-label-opportunities">9.4 White-Label Opportunities</h2>
+<p>TIAA, Fidelity, and Vanguard all partner with technology providers. A
+white-label deal could provide: - Guaranteed customer base - Faster time
+to revenue - Credibility</p>
+<p><strong>Tradeoffs:</strong> - Lower margins (50-70% vs 90%) - Less
+control - Brand not built</p>
+<hr />
+<h1 id="final-recommendation">10. Final Recommendation</h1>
+<h2 id="should-you-pursue-this">10.1 Should You Pursue This?</h2>
+<h3 id="if-you-have">If You Have:</h3>
+<ul>
+<li>✅ $750K+ runway</li>
+<li>✅ 2+ years patience</li>
+<li>✅ ERISA/retirement plan expertise on team</li>
+<li>✅ Relationships in nonprofit healthcare/higher ed</li>
+<li>✅ Tolerance for long sales cycles</li>
+</ul>
+<p><strong>Then:</strong> Proceed with narrow MVP focus</p>
+<h3 id="if-you-dont-have-those">If You Don’t Have Those:</h3>
+<p><strong>Then:</strong> This is not the right opportunity</p>
+<h2 id="if-yes-recommended-approach">10.2 If Yes: Recommended
+Approach</h2>
+<h3 id="narrow-the-focus">Narrow the Focus</h3>
+<ul>
+<li><strong>Target:</strong> Large nonprofit hospitals ONLY
+(initially)</li>
+<li><strong>Problem:</strong> 403b + 457b waterfall automation</li>
+<li><strong>Ignore:</strong> 457f, government 457, 401k (initially)</li>
+</ul>
+<h3 id="mvp-in-6-months">MVP in 6 Months</h3>
+<ul>
+<li>Single payroll integration (via Finch)</li>
+<li>Core contribution calculation</li>
+<li>Basic employer dashboard</li>
+<li>Manual data upload fallback</li>
+</ul>
+<h3 id="validate-before-building">Validate Before Building</h3>
+<ol type="1">
+<li>Talk to 20 hospital CFOs/HR directors</li>
+<li>Confirm willingness to pay $3,000-5,000/month</li>
+<li>Identify 3-5 pilot customers before writing code</li>
+</ol>
+<h3 id="team">Team</h3>
+<ul>
+<li>1 founder (sales/product)</li>
+<li>2 engineers</li>
+<li>1 compliance consultant (part-time)</li>
+<li>Total: ~$400K/year burn</li>
+</ul>
+<h3 id="timeline">Timeline</h3>
+<ul>
+<li>Months 1-3: Validation, design</li>
+<li>Months 4-9: MVP build</li>
+<li>Months 10-15: Pilot customers</li>
+<li>Months 16-24: Initial revenue</li>
+</ul>
+<h3 id="budget">Budget</h3>
+<ul>
+<li>Year 1: $500K</li>
+<li>Year 2: $750K</li>
+<li>Total: $1.25M to meaningful revenue</li>
+</ul>
+<h2 id="if-no-alternative-paths">10.3 If No: Alternative Paths</h2>
+<h3 id="alternative-a-compliance-consulting">Alternative A: Compliance
+Consulting</h3>
+<ul>
+<li>Offer manual contribution tracking as a service</li>
+<li>Lower tech investment, faster revenue</li>
+<li>Test market before building product</li>
+</ul>
+<h3 id="alternative-b-contenteducation-business">Alternative B:
+Content/Education Business</h3>
+<ul>
+<li>Build the “Secure 2.0 compliance guide” website</li>
+<li>Monetize through ads, lead gen</li>
+<li>Validate demand and build audience first</li>
+</ul>
+<h3 id="alternative-c-different-market-entirely">Alternative C:
+Different Market Entirely</h3>
+<ul>
+<li>Consumer apps have faster iteration cycles</li>
+<li>B2C retirement apps (rollover, education)</li>
+<li>Lower CAC, faster validation</li>
+</ul>
+<h2 id="comparison-to-consumer-app-opportunity">10.4 Comparison to
+Consumer App Opportunity</h2>
+<table>
+<thead>
+<tr>
+<th>Factor</th>
+<th>Retirement Compliance SaaS</th>
+<th>Consumer App</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Time to first revenue</td>
+<td>12-18 months</td>
+<td>3-6 months</td>
+</tr>
+<tr>
+<td>Capital required</td>
+<td>$500K-$1.5M</td>
+<td>$50K-$200K</td>
+</tr>
+<tr>
+<td>Sales cycle</td>
+<td>4-12 months</td>
+<td>Minutes</td>
+</tr>
+<tr>
+<td>Technical complexity</td>
+<td>High</td>
+<td>Varies</td>
+</tr>
+<tr>
+<td>Regulatory risk</td>
+<td>High</td>
+<td>Low-Medium</td>
+</tr>
+<tr>
+<td>Market size</td>
+<td>Small ($15M TAM)</td>
+<td>Potentially large</td>
+</tr>
+<tr>
+<td>Competition</td>
+<td>Incumbents strong</td>
+<td>Varies</td>
+</tr>
+<tr>
+<td>Iteration speed</td>
+<td>Slow (annual rules)</td>
+<td>Fast</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Bottom Line:</strong> Consumer apps offer faster validation
+and lower risk, but smaller potential upside per customer. Retirement
+SaaS has higher potential ARPU but much higher barriers.</p>
+<h2 id="key-questions-to-answer">10.5 Key Questions to Answer</h2>
+<p>Before proceeding, answer these:</p>
+<ol type="1">
+<li><strong>Do you have a compliance expert</strong> who can stay
+current on IRS rules?</li>
+<li><strong>Have you talked to 10+ potential customers</strong> and
+confirmed willingness to pay?</li>
+<li><strong>Do you have 24 months of runway</strong> or ability to raise
+it?</li>
+<li><strong>Can you tolerate 6-12 month sales cycles</strong> with 50%+
+loss rate?</li>
+<li><strong>Do you have relationships</strong> in nonprofit healthcare
+or higher ed?</li>
+</ol>
+<p>If you can’t answer “yes” to at least 3 of these, this is probably
+not the right opportunity for you.</p>
+<hr />
+<h1 id="appendix">Appendix</h1>
+<h2 id="a.-key-sources">A. Key Sources</h2>
+<ul>
+<li>IRS.gov - Contribution limits, plan rules</li>
+<li>PLANSPONSOR 2024 403(b) Market Survey</li>
+<li>Investment Company Institute - Retirement statistics</li>
+<li>Secure 2.0 Act of 2022 legislation</li>
+<li>Industry interviews and analysis</li>
+</ul>
+<h2 id="b.-glossary">B. Glossary</h2>
+<ul>
+<li><strong>403(b):</strong> Tax-sheltered annuity for
+nonprofits/schools</li>
+<li><strong>457(b):</strong> Deferred compensation for
+government/nonprofits</li>
+<li><strong>457(f):</strong> Ineligible deferred comp (no limits)</li>
+<li><strong>ERISA:</strong> Employee Retirement Income Security Act</li>
+<li><strong>PEPM:</strong> Per Employee Per Month pricing</li>
+<li><strong>TPA:</strong> Third Party Administrator</li>
+<li><strong>ARPU:</strong> Average Revenue Per User</li>
+<li><strong>CAC:</strong> Customer Acquisition Cost</li>
+<li><strong>LTV:</strong> Lifetime Value</li>
+</ul>
+<h2 id="c.-irs-resources">C. IRS Resources</h2>
+<ul>
+<li>Form 5500: Annual retirement plan filing</li>
+<li>Publication 571: 403(b) guide</li>
+<li>Notice 2024-2: Secure 2.0 guidance</li>
+<li>Revenue Procedure 2021-30: EPCRS correction</li>
+</ul>
+<hr />
+<p><em>This analysis represents a point-in-time assessment. Market
+conditions, regulations, and competitive landscape may change.</em></p>
+</body>
+</html>
