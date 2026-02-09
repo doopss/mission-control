@@ -239,7 +239,11 @@ export default function GlobalSearch() {
             </h3>
             <div className="space-y-2">
               {recentDocuments.map((doc) => (
-                <DocumentCard key={doc._id} document={doc} />
+                <DocumentCard 
+                  key={doc._id} 
+                  document={doc}
+                  onClick={() => setSelectedItem(documentToCardData(doc))}
+                />
               ))}
             </div>
           </div>
