@@ -33,6 +33,17 @@ _This is my curated memory - the distilled essence of what I've learned, not raw
 
 ---
 
+### Just Fix It - Don't Ask (Learned: Feb 9, 2026)
+**Problem:** Logger script broke when run standalone (couldn't find .env.local). I asked "Want me to patch that?" instead of just fixing it.
+
+**Alex's feedback:** "Why wouldn't I want you to solve this patch? Feel like something you should have pro actively done"
+
+**Solution:** Added `dotenv` package + auto-load `.env.local` at script startup. Committed and pushed.
+
+**Lesson learned:** Bug fixes, internal improvements, and obvious optimizations = just do it. Don't ask permission for things that are clearly beneficial and low-risk. Per AGENTS.md: "Be bold with internal ones (reading, organizing, learning)." Code fixes fall under this.
+
+---
+
 ### Dual Kanban System (Learned: Feb 8, 2026)
 **Problem:** I kept forgetting to update project status, leaving Alex without visibility.
 
@@ -43,7 +54,7 @@ _This is my curated memory - the distilled essence of what I've learned, not raw
    - Manual HTML updates + git push
    - Good for: High-level project status
 
-2. **Mission Control** (https://hb-mission-control.vercel.app)
+2. **Mission Control** (https://doopss-mission-control.vercel.app)
    - Real-time activity feed + searchable Kanban
    - Convex database
    - Good for: Detailed work logging, filtering, search
@@ -96,7 +107,7 @@ npx tsx scripts/openclaw-logger.ts \
 **Stack:** Next.js 16 + Convex + TypeScript  
 **Features:** Activity Feed, Calendar View, Kanban Board, Global Search  
 **Status:** ✅ Deployed to Vercel  
-**URL:** https://hb-mission-control.vercel.app
+**URL:** https://doopss-mission-control.vercel.app
 
 **Integration:** Use `openclaw-logger.ts` script to log activities from OpenClaw sessions.
 

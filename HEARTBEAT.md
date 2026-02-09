@@ -82,7 +82,7 @@
 5. Push: `git push origin main`
 
 ### 2. Mission Control Kanban (Convex/Vercel)
-**URL:** https://hb-mission-control.vercel.app (Kanban tab)
+**URL:** https://doopss-mission-control.vercel.app (Kanban tab)
 
 **Update when:**
 - Complete a task or major work item
