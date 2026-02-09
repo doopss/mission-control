@@ -41,6 +41,52 @@ function taskToCardData(task: any): CardData {
   };
 }
 
+// Convert document data to CardData for the modal
+function documentToCardData(doc: any): CardData {
+  return {
+    id: doc._id,
+    type: "activity", // Use activity type for consistent modal rendering
+    title: doc.title,
+    description: `📁 ${doc.path}\n\n**File Type:** ${doc.type} | **Size:** ${(doc.size / 1024).toFixed(1)} KB\n\n---\n\n${doc.content.substring(0, 500)}${doc.content.length > 500 ? '...' : ''}`,
+    category: "documentation",
+    timestamp: doc.lastModified,
+    status: "completed",
+    tags: doc.tags || [doc.type, "workspace-file"],
+    relatedFiles: [doc.path],
+    fileContents: [
+      {
+        path: doc.path,
+        content: doc.content,
+        size: doc.size,
+        mimeType: getMimeTypeFromType(doc.type),
+        lastModified: doc.lastModified,
+      }
+    ],
+    metadata: {
+      fileType: doc.type,
+      filePath: doc.path,
+    }
+  };
+}
+
+// Helper to get MIME type from file type
+function getMimeTypeFromType(type: string): string {
+  const mimeTypes: Record<string, string> = {
+    md: "text/markdown",
+    txt: "text/plain",
+    json: "application/json",
+    js: "text/javascript",
+    ts: "text/typescript",
+    tsx: "text/tsx",
+    jsx: "text/jsx",
+    css: "text/css",
+    html: "text/html",
+    py: "text/x-python",
+    sh: "text/x-shellscript",
+  };
+  return mimeTypes[type] || "text/plain";
+}
+
 export default function GlobalSearch() {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchType, setSearchType] = useState<"all" | "documents" | "tasks">(
@@ -212,7 +258,7 @@ export default function GlobalSearch() {
         {hasQuery && !isLoading && filteredDocuments.length > 0 && (
           <div>
             <h3 className="text-lg font-semibold text-white mb-3">
-              📝 Documents ({documentResults?.length || 0})
+              📁 Workspace Files ({documentResults?.length || 0})
             </h3>
             <div className="space-y-2">
               {filteredDocuments.map((doc) => (
@@ -220,6 +266,7 @@ export default function GlobalSearch() {
                   key={doc._id}
                   document={doc}
                   highlight={searchQuery}
+                  onClick={() => setSelectedItem(documentToCardData(doc))}
                 />
               ))}
             </div>
@@ -272,28 +319,46 @@ export default function GlobalSearch() {
 function DocumentCard({
   document,
   highlight,
+  onClick,
 }: {
   document: any;
   highlight?: string;
+  onClick: () => void;
 }) {
   const typeIcons: Record<string, string> = {
-    memory: "🧠",
-    document: "📄",
-    code: "💻",
-    notes: "📝",
+    md: "📝",
+    txt: "📄",
+    json: "📋",
+    js: "💛",
+    ts: "💙",
+    tsx: "💙",
+    jsx: "💛",
+    css: "🎨",
+    html: "🌐",
+    py: "🐍",
+    sh: "⚡",
   };
 
   const typeColors: Record<string, string> = {
-    memory: "bg-purple-500/20 text-purple-400 border-purple-500/30",
-    document: "bg-blue-500/20 text-blue-400 border-blue-500/30",
-    code: "bg-green-500/20 text-green-400 border-green-500/30",
-    notes: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",
+    md: "bg-blue-500/20 text-blue-400 border-blue-500/30",
+    txt: "bg-zinc-500/20 text-zinc-400 border-zinc-500/30",
+    json: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",
+    js: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",
+    ts: "bg-blue-500/20 text-blue-400 border-blue-500/30",
+    tsx: "bg-blue-500/20 text-blue-400 border-blue-500/30",
+    jsx: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",
+    css: "bg-pink-500/20 text-pink-400 border-pink-500/30",
+    html: "bg-orange-500/20 text-orange-400 border-orange-500/30",
+    py: "bg-green-500/20 text-green-400 border-green-500/30",
+    sh: "bg-purple-500/20 text-purple-400 border-purple-500/30",
   };
 
   const excerpt = getExcerpt(document.content, highlight);
 
   return (
-    <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-4 hover:border-zinc-700 transition-colors">
+    <div 
+      onClick={onClick}
+      className="bg-zinc-900 border border-zinc-800 rounded-lg p-4 hover:border-zinc-700 hover:bg-zinc-900/80 transition-colors cursor-pointer group">
       <div className="flex items-start justify-between mb-2">
         <div className="flex items-center gap-2">
           <span
@@ -332,6 +397,10 @@ function DocumentCard({
           ))}
         </div>
       )}
+      
+      <div className="mt-3 pt-3 border-t border-zinc-800 text-sm text-zinc-500 group-hover:text-emerald-400 transition-colors">
+        👁️ Click to view file
+      </div>
     </div>
   );
 }

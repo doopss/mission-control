@@ -95,3 +95,49 @@ export const recent = query({
       .take(limit);
   },
 });
+
+// Upsert document (for workspace indexing)
+export const upsert = mutation({
+  args: {
+    path: v.string(),
+    content: v.string(),
+    type: v.string(),
+    size: v.number(),
+    lastModified: v.number(),
+  },
+  handler: async (ctx, args) => {
+    // Check if document already exists
+    const existing = await ctx.db
+      .query("documents")
+      .withIndex("by_path", (q) => q.eq("path", args.path))
+      .first();
+
+    // Extract title from path (filename without extension)
+    const pathParts = args.path.split("/");
+    const filename = pathParts[pathParts.length - 1];
+    const title = filename.replace(/\.[^/.]+$/, "");
+
+    if (existing) {
+      // Update if file was modified
+      if (existing.lastModified < args.lastModified) {
+        return await ctx.db.patch(existing._id, {
+          content: args.content,
+          size: args.size,
+          lastModified: args.lastModified,
+          title,
+        });
+      }
+      return existing._id;
+    } else {
+      // Create new document
+      return await ctx.db.insert("documents", {
+        path: args.path,
+        title,
+        content: args.content,
+        type: args.type,
+        size: args.size,
+        lastModified: args.lastModified,
+      });
+    }
+  },
+});
