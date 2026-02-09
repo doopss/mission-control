@@ -52,6 +52,62 @@ Capture what matters. Decisions, context, things to remember. Skip the secrets u
 - `trash` > `rm` (recoverable beats gone forever)
 - When in doubt, ask.
 
+## ✅ Definition of Done
+
+**Before declaring ANY work "complete" or "done", verify ALL of these:**
+
+### 1. **Actually Test It** ✓
+- [ ] Works in the PRODUCTION environment (not just local)
+- [ ] Tested the exact thing you said you'd deliver
+- [ ] Verified with fresh eyes (refresh page, restart app, etc.)
+- [ ] Edge cases considered and tested
+
+### 2. **No Side Effects** ✓
+- [ ] No duplicates created (check before creating new items)
+- [ ] No conflicts with existing data/code
+- [ ] No orphaned or broken references
+- [ ] Cleanup completed (temp files, test data removed)
+
+### 3. **Evidence Provided** ✓
+- [ ] Can show proof it works (screenshot, logs, or URL)
+- [ ] Data is where you said it would be
+- [ ] Files are readable/accessible as promised
+- [ ] No "it should work" — verify it DOES work
+
+### 4. **Documentation Updated** ✓
+- [ ] Both Kanbans updated (if applicable)
+- [ ] README or relevant docs updated
+- [ ] Environment variables documented
+- [ ] Known issues or limitations noted
+
+### 5. **Self-Critique Passed** ✓
+- [ ] "Did I rush this?" — If yes, slow down and verify
+- [ ] "What could break?" — Check those things
+- [ ] "Would I trust this if someone else built it?" — Be honest
+- [ ] "Is this actually done, or just 'working on my machine'?"
+
+**If you can't check all boxes, IT'S NOT DONE.**
+
+### Anti-Patterns to Avoid
+
+❌ **Don't:**
+- Declare "done" before testing in production
+- Create duplicates without checking for existing items
+- Say "should work now" without verifying
+- Skip cleanup because "it's minor"
+- Rush to completion for speed over correctness
+- Announce success based on sub-agent completion without verification
+
+✅ **Do:**
+- Test end-to-end before announcing
+- Check for conflicts/duplicates BEFORE creating
+- Provide evidence (URLs, screenshots, logs)
+- Clean up test data and temporary files
+- Take time to verify properly
+- Own mistakes and document lessons learned
+
+**Remember:** Speed doesn't matter if it doesn't work. Correctness > velocity.
+
 ## External vs Internal
 
 **Safe to do freely:**
