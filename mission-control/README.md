@@ -53,11 +53,18 @@ Visual task management with drag-and-drop:
   - All tags
   - Markdown rendering for descriptions
   - Close with ESC or click outside
+- **Inline file viewer:**
+  - Click any related file to view its contents
+  - Markdown files rendered with proper formatting
+  - Code files with syntax highlighting + line numbers
+  - Copy-to-clipboard button
+  - Collapsible/expandable viewer sections
 
 **Perfect for:**
 - Quick task triage
 - Visual workflow management
 - Reviewing completed work in detail
+- Reading documentation and code without leaving the app
 
 ### 4. **Global Search** 🔍
 Search across ALL workspace data:
@@ -338,6 +345,23 @@ npm run dev
 
 ---
 
+## ⚠️ Important Notes
+
+### File Viewer Limitations
+
+The **inline file viewer** feature works in **local development only**. When deployed to Vercel:
+
+- Vercel serverless functions cannot access your local workspace directory
+- File viewing will show a "local development only" message
+- All other features (Kanban, search, activities) work normally in production
+
+**For full file viewing support**, consider:
+1. Running locally with `npm run dev`
+2. Future: Integrating GitHub API to fetch files from repos
+3. Future: Using Vercel Blob Storage for indexed files
+
+---
+
 ## 📝 Todo / Future Enhancements
 
 - [ ] Add activity charts/graphs (time spent per category)
@@ -345,6 +369,8 @@ npm run dev
 - [ ] Task templates (recurring patterns)
 - [x] Kanban board view for tasks
 - [x] Kanban card detail modal with markdown rendering
+- [x] Inline file viewer (local dev only)
+- [ ] GitHub integration for file viewing in production
 - [ ] Real-time notifications (when task is due)
 - [ ] Integration with OpenClaw CLI
 - [ ] Mobile responsive improvements
