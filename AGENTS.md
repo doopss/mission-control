@@ -98,11 +98,16 @@ Capture what matters. Decisions, context, things to remember. Skip the secrets u
 - Skip cleanup because "it's minor"
 - Rush to completion for speed over correctness
 - Announce success based on sub-agent completion without verification
+- Trust sub-agent code without reviewing it first
+- Skip testing because "the sub-agent built it"
 
 ✅ **Do:**
 - Test end-to-end before announcing
 - Check for conflicts/duplicates BEFORE creating
 - Provide evidence (URLs, screenshots, logs)
+- Review sub-agent code before pushing
+- Test sub-agent deliverables yourself
+- Treat sub-agent work like any other code (verify it works)
 - Clean up test data and temporary files
 - Take time to verify properly
 - Own mistakes and document lessons learned
@@ -141,7 +146,7 @@ git add index.html && git commit -m "Update: <what changed>" && git push origin 
 ```
 
 ### 2. Mission Control (Activity Feed + Kanban)
-**URL:** https://hb-mission-control.vercel.app
+**URL:** https://mission-control-sand-two.vercel.app
 
 Searchable, filterable activity history. Kanban tab shows recent work organized by status.
 

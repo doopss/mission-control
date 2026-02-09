@@ -109,6 +109,80 @@ cp skills/deployment-verification/assets/DEPLOYMENT-CHECKLIST.md PROJECT-DEPLOYM
 
 Fill out before declaring deployment complete. Use as a forcing function to verify each critical step.
 
+## Code Review (Sub-Agent Work)
+
+**When delegating to sub-agents (Opus, etc.), always review code before deploying:**
+
+### Common Sub-Agent Pitfalls
+
+**1. Volatile Query Parameters**
+```typescript
+// ❌ BAD - Creates new query every render
+const data = useQuery(api.getData, { 
+  endTime: Date.now() // Changes every millisecond!
+});
+
+// ✅ GOOD - Stable params
+const endTime = useMemo(() => Date.now(), []); // Memoized
+// OR let server calculate:
+const data = useQuery(api.getData, { startTime }); // No endTime
+```
+
+**Impact:** Infinite re-renders (2000+ renders in 15 seconds), app becomes unusable
+
+**2. Environment Variable Mismatches**
+```typescript
+// ❌ BAD - Hardcoded dev URL
+const API_URL = "https://dev-deployment.example.com";
+
+// ✅ GOOD - Environment-specific
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+```
+
+**Impact:** Code works locally, fails in production
+
+**3. Missing Error Handling**
+```typescript
+// ❌ BAD - No error handling
+const data = await fetch(url).then(r => r.json());
+
+// ✅ GOOD - Handle errors
+try {
+  const response = await fetch(url);
+  if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  const data = await response.json();
+} catch (error) {
+  console.error("Fetch failed:", error);
+}
+```
+
+**Impact:** Silent failures, infinite loading states
+
+### Review Checklist (Before Pushing Sub-Agent Code)
+
+- [ ] **Check for `Date.now()` in query params** - Should be memoized or server-side
+- [ ] **Verify environment variables** - No hardcoded dev URLs
+- [ ] **Test locally first** - Does it actually work?
+- [ ] **Review error handling** - What happens when queries fail?
+- [ ] **Check for infinite loops** - Any useEffect missing dependencies?
+- [ ] **Verify TypeScript builds** - Run `npm run build` locally
+- [ ] **Test critical user flows** - Can users actually use the feature?
+
+### When to Review
+
+**Always review before pushing:**
+- New features built by sub-agents
+- Database schema changes
+- API integrations
+- Complex UI components
+
+**Can skip quick review for:**
+- Documentation updates
+- Style/CSS tweaks
+- Copy changes
+
+**Rule of thumb:** If the sub-agent wrote code that will run in production, review it.
+
 ## Step-by-Step Workflow
 
 ### Before Deployment
