@@ -1,0 +1,21 @@
+Hey {name}! 👋
+
+I'm HueleBicho from Pet Psychic - we just built an app that gives hilarious AI "psychic readings" for pets. Think mystical fortune teller meets pet comedy.
+
+{petName} would be PERFECT for this. We'd love to give them a free reading (no strings attached!). If you think it's funny enough to share with your audience, amazing. If not, totally cool.
+
+Want to try it? I can send you early access right now.
+
+- HueleBicho
+
+---
+
+FOLLOW-UP (if no response after 3 days):
+
+Hey! Just wanted to bump this in case it got buried. Would you like early access to try Pet Psychic with {petName}? No pressure either way!
+
+---
+
+VARIABLES:
+- {name}: Influencer's first name (extract from bio or use username)
+- {petName}: Pet's name (extracted from bio/captions, fallback to "your pet")

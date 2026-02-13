@@ -54,6 +54,13 @@ Capture what matters. Decisions, context, things to remember. Skip the secrets u
 
 ## ✅ Definition of Done
 
+**AUTOMATIC MISSION CONTROL LOGGING:** Before telling user work is "complete", you MUST log to Mission Control:
+```bash
+cd ~/.openclaw/workspace/mission-control
+npx tsx scripts/openclaw-logger.ts log "Task Title" "What was done" "category"
+```
+Do this automatically as part of completion - don't ask, just log it.
+
 **Before declaring ANY work "complete" or "done", verify ALL of these:**
 
 ### 1. **Actually Test It** ✓
@@ -76,10 +83,12 @@ Capture what matters. Decisions, context, things to remember. Skip the secrets u
 - [ ] No "it should work" — verify it DOES work
 
 ### 4. **Documentation Updated** ✓
-- [ ] Both Kanbans updated (if applicable)
+- [ ] **Mission Control logged** with files (AUTO-LOG: Run `npx tsx scripts/openclaw-logger.ts log "Title" "Description" "category"` in mission-control directory BEFORE telling user work is complete)
 - [ ] README or relevant docs updated
 - [ ] Environment variables documented
 - [ ] Known issues or limitations noted
+
+**Note:** Static Kanban updates are optional unless specifically requested.
 
 ### 5. **Self-Critique Passed** ✓
 - [ ] "Did I rush this?" — If yes, slow down and verify

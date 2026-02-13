@@ -1,0 +1,27 @@
+{
+  "targets": [
+    {
+      "username": "example_pet_account",
+      "platform": "instagram",
+      "petName": "Max",
+      "petType": "dog",
+      "followers": 25000,
+      "engagementRate": 12.5,
+      "lastPost": "2026-02-10",
+      "contactMethod": "DM",
+      "status": "not_contacted",
+      "notes": "Posts funny dog content, very active in comments",
+      "dateContacted": null,
+      "responseStatus": null,
+      "responseDate": null
+    }
+  ],
+  "metadata": {
+    "totalTargets": 0,
+    "contacted": 0,
+    "responded": 0,
+    "interested": 0,
+    "notInterested": 0,
+    "lastUpdated": "2026-02-11T04:16:00-05:00"
+  }
+}

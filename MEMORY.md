@@ -156,7 +156,11 @@ npx tsx scripts/openclaw-logger.ts \
 
 ### Budge (ADHD Behavioral Activation)
 **What:** Task-breaking app to help users get unstuck  
-**Status:** ⏳ QA complete, waiting for Alex to test functionally  
+**Status:** ✅ All user feedback fixes pushed (Feb 9), waiting for testing  
+**Recent work (Feb 9, 2026):**
+- Fixed 6 user feedback items: notifications crash, sound unmute, keep going nav, timer position, stronger haptics, orb improvements
+- Branch: `feature/focus-sounds-haptics` 
+- Orb now breathes 2-3x more, warmer focus mode, no outline
 **Deliverables:**
 - Code review report
 - 10 TikTok scripts with timing
