@@ -3,15 +3,22 @@
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useState } from "react";
+import { motion } from "framer-motion";
 import CardDetailModal, { CardData } from "./CardDetailModal";
 
-const categoryColors: Record<string, string> = {
-  development: "bg-blue-500/20 text-blue-400 border-blue-500/30",
-  research: "bg-purple-500/20 text-purple-400 border-purple-500/30",
-  communication: "bg-green-500/20 text-green-400 border-green-500/30",
-  analysis: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",
-  documentation: "bg-pink-500/20 text-pink-400 border-pink-500/30",
+// v2.0 Design System Colors
+const categoryColors: Record<string, { bg: string; text: string; color: string }> = {
+  development: { bg: "bg-[#00D4AA]/20", text: "text-[#00D4AA]", color: "#00D4AA" },
+  research: { bg: "bg-[#A855F7]/20", text: "text-[#A855F7]", color: "#A855F7" },
+  communication: { bg: "bg-[#4ADE80]/20", text: "text-[#4ADE80]", color: "#4ADE80" },
+  analysis: { bg: "bg-[#FFD93D]/20", text: "text-[#FFD93D]", color: "#FFD93D" },
+  documentation: { bg: "bg-[#EC4899]/20", text: "text-[#EC4899]", color: "#EC4899" },
+  planning: { bg: "bg-[#3B82F6]/20", text: "text-[#3B82F6]", color: "#3B82F6" },
+  design: { bg: "bg-[#F97316]/20", text: "text-[#F97316]", color: "#F97316" },
+  testing: { bg: "bg-[#EF4444]/20", text: "text-[#EF4444]", color: "#EF4444" },
 };
+
+const defaultCategoryStyle = { bg: "bg-[#6B7280]/20", text: "text-[#6B7280]", color: "#6B7280" };
 
 const categoryIcons: Record<string, string> = {
   development: "💻",
@@ -19,6 +26,9 @@ const categoryIcons: Record<string, string> = {
   communication: "💬",
   analysis: "📊",
   documentation: "📝",
+  planning: "📋",
+  design: "🎨",
+  testing: "🧪",
 };
 
 // Convert activity data to CardData for the modal
@@ -35,6 +45,7 @@ function activityToCardData(activity: any): CardData {
     tags: activity.tags,
     duration: activity.duration,
     metadata: activity.metadata,
+    fileContents: activity.fileContents,
   };
 }
 
@@ -54,7 +65,10 @@ export default function ActivityFeed() {
   if (!activities || !stats) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="text-zinc-400">Loading activities...</div>
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-8 h-8 border-2 border-[#00D4AA] border-t-transparent rounded-full animate-spin" />
+          <div className="text-[#9CA3AF]">Loading activities...</div>
+        </div>
       </div>
     );
   }
@@ -71,31 +85,42 @@ export default function ActivityFeed() {
         />
       )}
 
+      {/* Header */}
+      <div>
+        <h2 className="text-2xl font-bold text-white flex items-center gap-3">
+          <span className="text-3xl">🏠</span>
+          Activity Feed
+        </h2>
+        <p className="text-sm text-[#9CA3AF] mt-1">
+          Recent operations and completed tasks
+        </p>
+      </div>
+
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <StatCard
           title="Total Activities"
           value={stats.total}
           icon="📊"
-          color="emerald"
+          color="#00D4AA"
         />
         <StatCard
           title="Last 24 Hours"
           value={stats.last24h}
           icon="⏰"
-          color="blue"
+          color="#3B82F6"
         />
         <StatCard
           title="Last Week"
           value={stats.lastWeek}
           icon="📈"
-          color="purple"
+          color="#A855F7"
         />
         <StatCard
           title="Categories"
           value={categories.length}
           icon="🏷️"
-          color="yellow"
+          color="#FFD93D"
         />
       </div>
 
@@ -103,50 +128,59 @@ export default function ActivityFeed() {
       <div className="flex gap-2 flex-wrap">
         <button
           onClick={() => setSelectedCategory(undefined)}
-          className={`px-3 py-1.5 rounded-lg text-sm transition-colors ${
+          className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
             !selectedCategory
-              ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
-              : "bg-zinc-800 text-zinc-400 hover:text-white"
+              ? "bg-[#00D4AA]/20 text-[#00D4AA] border border-[#00D4AA]/30"
+              : "bg-[#1A1A1A] text-[#9CA3AF] hover:text-white border border-[#2D2D2D]"
           }`}
         >
           All Activities
         </button>
-        {categories.map((category) => (
-          <button
-            key={category}
-            onClick={() => setSelectedCategory(category)}
-            className={`px-3 py-1.5 rounded-lg text-sm transition-colors ${
-              selectedCategory === category
-                ? categoryColors[category] || "bg-zinc-700 text-white"
-                : "bg-zinc-800 text-zinc-400 hover:text-white"
-            } border`}
-          >
-            {categoryIcons[category] || "📌"} {category} (
-            {stats.byCategory[category]})
-          </button>
-        ))}
+        {categories.map((category) => {
+          const style = categoryColors[category] || defaultCategoryStyle;
+          return (
+            <button
+              key={category}
+              onClick={() => setSelectedCategory(category)}
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors capitalize ${
+                selectedCategory === category
+                  ? `${style.bg} ${style.text} border border-current/30`
+                  : "bg-[#1A1A1A] text-[#9CA3AF] hover:text-white border border-[#2D2D2D]"
+              }`}
+            >
+              {categoryIcons[category] || "📌"} {category} ({stats.byCategory[category]})
+            </button>
+          );
+        })}
       </div>
 
       {/* Activity Timeline */}
       <div className="space-y-4">
-        <h2 className="text-xl font-semibold text-zinc-200">
+        <h3 className="text-lg font-semibold text-white flex items-center gap-2">
           Activity Timeline
-          <span className="text-sm text-zinc-500 ml-2 font-normal">• Click any activity for details</span>
-        </h2>
+          <span className="text-xs text-[#6B7280] font-normal">• Click for details</span>
+        </h3>
 
         {activities.length === 0 ? (
-          <div className="text-center py-12 text-zinc-400">
+          <div className="text-center py-12 bg-[#1A1A1A] rounded-xl border border-[#2D2D2D]">
             <div className="text-6xl mb-4">📭</div>
-            <p>No activities logged yet</p>
+            <h3 className="text-lg font-semibold text-white mb-2">No activities logged yet</h3>
+            <p className="text-[#9CA3AF]">Activities will appear here as you work</p>
           </div>
         ) : (
           <div className="space-y-3">
-            {activities.map((activity) => (
-              <ActivityCard 
-                key={activity._id} 
-                activity={activity} 
-                onClick={() => setSelectedActivity(activityToCardData(activity))}
-              />
+            {activities.map((activity, index) => (
+              <motion.div
+                key={activity._id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.03, duration: 0.2 }}
+              >
+                <ActivityCard 
+                  activity={activity} 
+                  onClick={() => setSelectedActivity(activityToCardData(activity))}
+                />
+              </motion.div>
             ))}
           </div>
         )}
@@ -166,22 +200,19 @@ function StatCard({
   icon: string;
   color: string;
 }) {
-  const colorClasses: Record<string, string> = {
-    emerald: "from-emerald-500/20 to-emerald-600/20 border-emerald-500/30",
-    blue: "from-blue-500/20 to-blue-600/20 border-blue-500/30",
-    purple: "from-purple-500/20 to-purple-600/20 border-purple-500/30",
-    yellow: "from-yellow-500/20 to-yellow-600/20 border-yellow-500/30",
-  };
-
   return (
     <div
-      className={`bg-gradient-to-br ${colorClasses[color]} border rounded-lg p-4`}
+      className="bg-[#1A1A1A] border border-[#2D2D2D] rounded-xl p-4 hover:border-[#3D3D3D] transition-colors"
     >
       <div className="flex items-center justify-between mb-2">
         <span className="text-2xl">{icon}</span>
         <span className="text-3xl font-bold text-white">{value}</span>
       </div>
-      <div className="text-sm text-zinc-300">{title}</div>
+      <div className="text-sm text-[#9CA3AF]">{title}</div>
+      <div 
+        className="h-1 rounded-full mt-3 opacity-30"
+        style={{ backgroundColor: color }}
+      />
     </div>
   );
 }
@@ -192,32 +223,31 @@ function ActivityCard({ activity, onClick }: { activity: any; onClick: () => voi
   const date = new Date(activity.timestamp);
   const timeAgo = getTimeAgo(activity.timestamp);
 
-  const categoryColor =
-    categoryColors[activity.category] || "bg-zinc-700 text-white";
+  const style = categoryColors[activity.category] || defaultCategoryStyle;
   const categoryIcon = categoryIcons[activity.category] || "📌";
 
   return (
     <div 
-      className="bg-zinc-900 border border-zinc-800 rounded-lg p-4 hover:border-zinc-700 hover:bg-zinc-900/80 transition-colors cursor-pointer"
+      className="bg-[#1A1A1A] border border-[#2D2D2D] rounded-xl p-4 hover:border-[#3D3D3D] transition-colors cursor-pointer"
       onClick={onClick}
     >
       <div className="flex items-start justify-between">
         <div className="flex-1">
-          <div className="flex items-center gap-2 mb-2">
-            <span
-              className={`px-2 py-0.5 rounded text-xs border ${categoryColor}`}
-            >
+          <div className="flex items-center gap-2 mb-2 flex-wrap">
+            <span className={`px-2 py-0.5 rounded text-xs font-medium ${style.bg} ${style.text} capitalize`}>
               {categoryIcon} {activity.category}
             </span>
-            <span className="text-xs text-zinc-500">{timeAgo}</span>
+            <span className="text-xs text-[#6B7280]">{timeAgo}</span>
             {activity.status && (
               <span
-                className={`px-2 py-0.5 rounded text-xs ${
+                className={`px-2 py-0.5 rounded text-xs font-medium ${
                   activity.status === "completed"
-                    ? "bg-green-500/20 text-green-400"
+                    ? "bg-[#4ADE80]/20 text-[#4ADE80]"
                     : activity.status === "in_progress"
-                    ? "bg-yellow-500/20 text-yellow-400"
-                    : "bg-red-500/20 text-red-400"
+                    ? "bg-[#FFD93D]/20 text-[#FFD93D]"
+                    : activity.status === "blocked"
+                    ? "bg-[#FF6B4A]/20 text-[#FF6B4A]"
+                    : "bg-[#6B7280]/20 text-[#6B7280]"
                 }`}
               >
                 {activity.status}
@@ -225,28 +255,32 @@ function ActivityCard({ activity, onClick }: { activity: any; onClick: () => voi
             )}
           </div>
 
-          <h3 className="text-lg font-semibold text-white mb-1">
+          <h3 className="text-base font-semibold text-white mb-1 line-clamp-2">
             {activity.title}
           </h3>
 
-          <p className="text-sm text-zinc-400 mb-2">{activity.description}</p>
+          <p className="text-sm text-[#9CA3AF] line-clamp-2">{activity.description}</p>
 
           {expanded && (
-            <div className="mt-3 space-y-2">
+            <motion.div 
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              className="mt-3 pt-3 border-t border-[#2D2D2D] space-y-2"
+            >
               {activity.duration && (
-                <div className="text-sm text-zinc-400">
+                <div className="text-sm text-[#9CA3AF]">
                   ⏱️ Duration: {activity.duration} minutes
                 </div>
               )}
 
               {activity.relatedFiles && activity.relatedFiles.length > 0 && (
                 <div className="text-sm">
-                  <div className="text-zinc-400 mb-1">📁 Related Files:</div>
+                  <div className="text-[#9CA3AF] mb-1">📁 Related Files:</div>
                   <div className="space-y-1">
                     {activity.relatedFiles.map((file: string, i: number) => (
                       <div
                         key={i}
-                        className="text-xs text-emerald-400 font-mono bg-zinc-800 px-2 py-1 rounded"
+                        className="text-xs text-[#00D4AA] font-mono bg-[#0D0D0D] px-2 py-1 rounded truncate"
                       >
                         {file}
                       </div>
@@ -260,14 +294,14 @@ function ActivityCard({ activity, onClick }: { activity: any; onClick: () => voi
                   {activity.tags.map((tag: string, i: number) => (
                     <span
                       key={i}
-                      className="text-xs px-2 py-0.5 bg-zinc-800 text-zinc-400 rounded"
+                      className="text-xs px-2 py-0.5 bg-[#2D2D2D] text-[#9CA3AF] rounded"
                     >
                       #{tag}
                     </span>
                   ))}
                 </div>
               )}
-            </div>
+            </motion.div>
           )}
         </div>
 
@@ -276,14 +310,14 @@ function ActivityCard({ activity, onClick }: { activity: any; onClick: () => voi
             e.stopPropagation();
             setExpanded(!expanded);
           }}
-          className="text-zinc-500 hover:text-white transition-colors ml-4 p-1 hover:bg-zinc-800 rounded"
+          className="text-[#6B7280] hover:text-white transition-colors ml-4 p-1.5 hover:bg-[#2D2D2D] rounded"
         >
           {expanded ? "▼" : "▶"}
         </button>
       </div>
 
-      <div className="flex items-center justify-between mt-2">
-        <div className="text-xs text-zinc-600">
+      <div className="flex items-center justify-between mt-3 pt-3 border-t border-[#2D2D2D]/50">
+        <div className="text-xs text-[#6B7280]">
           {date.toLocaleString("en-US", {
             month: "short",
             day: "numeric",
@@ -297,7 +331,7 @@ function ActivityCard({ activity, onClick }: { activity: any; onClick: () => voi
             e.stopPropagation();
             onClick();
           }}
-          className="text-xs text-emerald-400 hover:text-emerald-300 hover:underline"
+          className="text-xs text-[#00D4AA] hover:text-[#00B894] hover:underline font-medium"
         >
           View details →
         </button>
@@ -309,8 +343,9 @@ function ActivityCard({ activity, onClick }: { activity: any; onClick: () => voi
 function getTimeAgo(timestamp: number): string {
   const seconds = Math.floor((Date.now() - timestamp) / 1000);
 
-  if (seconds < 60) return `${seconds}s ago`;
+  if (seconds < 60) return "just now";
   if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
   if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
-  return `${Math.floor(seconds / 86400)}d ago`;
+  if (seconds < 604800) return `${Math.floor(seconds / 86400)}d ago`;
+  return `${Math.floor(seconds / 604800)}w ago`;
 }

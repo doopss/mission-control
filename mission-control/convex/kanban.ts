@@ -286,3 +286,62 @@ export const getCategories = query({
     return Array.from(categories).sort();
   },
 });
+
+// Create a new task from the UI
+export const createTask = mutation({
+  args: {
+    title: v.string(),
+    description: v.string(),
+    category: v.string(),
+    priority: v.string(),
+    column: v.union(
+      v.literal("backlog"),
+      v.literal("blocked"),
+      v.literal("now"),
+      v.literal("next"),
+      v.literal("done")
+    ),
+  },
+  handler: async (ctx, args) => {
+    const { title, description, category, priority, column } = args;
+    const now = Date.now();
+
+    // Map column to activity status
+    let status: string;
+    switch (column) {
+      case "backlog":
+        status = "backlog";
+        break;
+      case "blocked":
+        status = "blocked";
+        break;
+      case "now":
+        status = "in_progress";
+        break;
+      case "next":
+        status = "in_progress";
+        break;
+      case "done":
+        status = "completed";
+        break;
+    }
+
+    // Create as an activity (since activities are the primary card type)
+    const activityId = await ctx.db.insert("activities", {
+      title,
+      description,
+      category,
+      status,
+      timestamp: now,
+      type: "task_created",
+      relatedFiles: [],
+      tags: [],
+      metadata: {
+        priority,
+        createdFrom: "mission-control-ui",
+      },
+    });
+
+    return activityId;
+  },
+});
