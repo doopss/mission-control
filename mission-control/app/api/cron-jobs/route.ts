@@ -1,78 +1,104 @@
 import { NextResponse } from "next/server";
+import { exec } from "child_process";
+import { promisify } from "util";
 
-// This endpoint would normally connect to OpenClaw Gateway
-// For now, return sample data
+const execAsync = promisify(exec);
+
+// Format next run timestamp as human-readable string
+function formatNextRun(nextRunAtMs: number): string {
+  const now = Date.now();
+  const diff = nextRunAtMs - now;
+  
+  const hours = Math.floor(diff / (1000 * 60 * 60));
+  const days = Math.floor(hours / 24);
+  
+  if (days > 1) {
+    return `in ${days}d`;
+  } else if (hours > 1) {
+    return `in ${hours}h`;
+  } else if (hours === 1) {
+    return "in 1h";
+  } else {
+    return "soon";
+  }
+}
+
+// Extract model from payload
+function extractModel(payload: any): string {
+  if (payload?.model) {
+    const model = payload.model.toLowerCase();
+    if (model.includes("opus")) return "opus";
+    if (model.includes("sonnet")) return "sonnet";
+    if (model.includes("haiku")) return "haiku";
+    return model;
+  }
+  return "default";
+}
+
 export async function GET() {
   try {
-    // In production, this would call OpenClaw Gateway API
-    // const response = await fetch('http://localhost:4242/api/cron');
+    // Call OpenClaw Gateway cron list API
+    const { stdout } = await execAsync("openclaw cron list --json");
+    const data = JSON.parse(stdout);
     
-    // Sample data for demonstration
-    const jobs = [
-      {
-        id: "1",
-        name: "Morning Work Summary",
-        schedule: "0 7 * * *",
-        nextRun: "Tomorrow 7:00 AM",
-        model: "sonnet",
-        enabled: true,
-        prompt: "Summarize pending tasks and priorities for the day",
-        channel: "telegram",
-      },
-      {
-        id: "2",
-        name: "Daily Task List",
-        schedule: "0 8 * * *",
-        nextRun: "Tomorrow 8:00 AM",
-        model: "sonnet",
-        enabled: true,
-        prompt: "Generate and send daily task list",
-        channel: "telegram",
-      },
-      {
-        id: "3",
-        name: "Market Digest",
-        schedule: "0 9 * * 1-5",
-        nextRun: "Tomorrow 9:00 AM",
-        model: "opus",
-        enabled: false,
-        prompt: "Analyze and summarize market trends",
-        channel: "telegram",
-      },
-      {
-        id: "4",
-        name: "Weekly Review",
-        schedule: "0 18 * * 5",
-        nextRun: "Friday 6:00 PM",
-        model: "sonnet",
-        enabled: true,
-        prompt: "Generate weekly progress report",
-        channel: "telegram",
-      },
-    ];
+    // Transform Gateway format to UI format
+    const jobs = data.jobs.map((job: any) => ({
+      id: job.id,
+      name: job.name,
+      description: job.description,
+      schedule: job.schedule?.expr || "unknown",
+      timezone: job.schedule?.tz || "America/New_York",
+      nextRun: job.state?.nextRunAtMs ? formatNextRun(job.state.nextRunAtMs) : "not scheduled",
+      nextRunTimestamp: job.state?.nextRunAtMs,
+      model: extractModel(job.payload),
+      enabled: job.enabled,
+      prompt: job.payload?.message,
+      channel: job.delivery?.channel || "telegram",
+      agentId: job.agentId || "default",
+      sessionTarget: job.sessionTarget || "isolated",
+    }));
 
     return NextResponse.json({ jobs });
   } catch (error) {
     console.error("Error fetching cron jobs:", error);
     return NextResponse.json(
-      { error: "Failed to fetch cron jobs", jobs: [] },
+      { error: "Failed to fetch cron jobs from Gateway", jobs: [] },
       { status: 500 }
     );
   }
 }
 
-export async function POST(request: Request) {
+export async function PATCH(request: Request) {
   try {
     const body = await request.json();
+    const { jobId, action } = body;
     
-    // In production, this would create a cron job via OpenClaw Gateway
-    console.log("Create cron job:", body);
+    if (!jobId || !action) {
+      return NextResponse.json(
+        { error: "Missing jobId or action" },
+        { status: 400 }
+      );
+    }
     
-    return NextResponse.json({ success: true, id: Date.now().toString() });
+    let command = "";
+    if (action === "enable") {
+      command = `openclaw cron enable ${jobId}`;
+    } else if (action === "disable") {
+      command = `openclaw cron disable ${jobId}`;
+    } else {
+      return NextResponse.json(
+        { error: "Invalid action. Use 'enable' or 'disable'" },
+        { status: 400 }
+      );
+    }
+    
+    await execAsync(command);
+    
+    return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("Error creating cron job:", error);
+    console.error("Error updating cron job:", error);
     return NextResponse.json(
-      { error: "Failed to create cron job" },
+      { error: "Failed to update cron job" },
       { status: 500 }
     );
   }

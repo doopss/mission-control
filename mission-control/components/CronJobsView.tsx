@@ -26,78 +26,63 @@ export default function CronJobsView() {
   const fetchCronJobs = async () => {
     try {
       setLoading(true);
-      // Try to fetch from OpenClaw gateway
+      setError(null);
+      
       const response = await fetch('/api/cron-jobs');
-      if (response.ok) {
-        const data = await response.json();
-        setCronJobs(data.jobs || []);
-      } else {
-        // Fallback: Show sample data for demo
-        setCronJobs([
-          {
-            id: "1",
-            name: "Morning Work Summary",
-            schedule: "0 7 * * *",
-            nextRun: "Tomorrow 7:00 AM",
-            model: "sonnet",
-            enabled: true,
-            prompt: "Summarize pending tasks and priorities for the day",
-          },
-          {
-            id: "2",
-            name: "Daily Task List",
-            schedule: "0 8 * * *",
-            nextRun: "Tomorrow 8:00 AM",
-            model: "sonnet",
-            enabled: true,
-            prompt: "Generate and send daily task list",
-          },
-          {
-            id: "3",
-            name: "Market Digest",
-            schedule: "0 9 * * 1-5",
-            nextRun: "Tomorrow 9:00 AM",
-            model: "opus",
-            enabled: false,
-            prompt: "Analyze and summarize market trends",
-          },
-          {
-            id: "4",
-            name: "Weekly Review",
-            schedule: "0 18 * * 5",
-            nextRun: "Friday 6:00 PM",
-            model: "sonnet",
-            enabled: true,
-            prompt: "Generate weekly progress report",
-          },
-        ]);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
+      
+      const data = await response.json();
+      
+      if (data.error) {
+        throw new Error(data.error);
+      }
+      
+      setCronJobs(data.jobs || []);
     } catch (err) {
       console.error("Failed to fetch cron jobs:", err);
-      setError("Could not connect to OpenClaw Gateway");
-      // Still show sample data
-      setCronJobs([
-        {
-          id: "1",
-          name: "Morning Work Summary",
-          schedule: "0 7 * * *",
-          nextRun: "Tomorrow 7:00 AM",
-          model: "sonnet",
-          enabled: true,
-        },
-      ]);
+      setError(err instanceof Error ? err.message : "Could not connect to OpenClaw Gateway");
+      setCronJobs([]);
     } finally {
       setLoading(false);
     }
   };
 
   const toggleJob = async (jobId: string) => {
+    const job = cronJobs.find(j => j.id === jobId);
+    if (!job) return;
+    
+    const action = job.enabled ? "disable" : "enable";
+    
+    // Optimistic update
     setCronJobs(jobs =>
-      jobs.map(job =>
-        job.id === jobId ? { ...job, enabled: !job.enabled } : job
+      jobs.map(j =>
+        j.id === jobId ? { ...j, enabled: !j.enabled } : j
       )
     );
-    // TODO: Call API to actually toggle the job
+    
+    try {
+      const response = await fetch('/api/cron-jobs', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ jobId, action }),
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Failed to ${action} job`);
+      }
+    } catch (err) {
+      console.error(`Error toggling job ${jobId}:`, err);
+      // Revert on error
+      setCronJobs(jobs =>
+        jobs.map(j =>
+          j.id === jobId ? { ...j, enabled: job.enabled } : j
+        )
+      );
+      setError(err instanceof Error ? err.message : `Failed to ${action} job`);
+    }
   };
 
   const parseSchedule = (schedule: string): string => {

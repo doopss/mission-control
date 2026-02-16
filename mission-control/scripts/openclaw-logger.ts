@@ -19,9 +19,9 @@ import { api } from "../convex/_generated/api";
 import * as fs from "fs";
 import * as readline from "readline";
 
-// Always use PROD deployment for activity logging
-// Dev deployment (good-lemming-768) is for local development only
-const CONVEX_URL = process.env.OPENCLAW_LOGGER_CONVEX_URL || "https://diligent-tortoise-263.convex.cloud";
+// Use NEXT_PUBLIC_CONVEX_URL from .env.local by default
+// Can be overridden with OPENCLAW_LOGGER_CONVEX_URL environment variable
+const CONVEX_URL = process.env.OPENCLAW_LOGGER_CONVEX_URL || process.env.NEXT_PUBLIC_CONVEX_URL || "https://diligent-tortoise-263.convex.cloud";
 const client = new ConvexHttpClient(CONVEX_URL);
 
 // Workspace root for resolving file paths
@@ -583,8 +583,19 @@ if (require.main === module) {
     const title = args[1];
     const description = args[2];
     const category = args[3] || "general";
+    
+    // Parse optional flags
+    const statusFlag = args.find(arg => arg.startsWith("--status"));
+    const tagsFlag = args.find(arg => arg.startsWith("--tags"));
+    const durationFlag = args.find(arg => arg.startsWith("--duration"));
+    const filesFlag = args.find(arg => arg.startsWith("--files"));
+    
+    const status = statusFlag ? args[args.indexOf(statusFlag) + 1] : "completed";
+    const tags = tagsFlag ? args[args.indexOf(tagsFlag) + 1]?.split(",") : undefined;
+    const duration = durationFlag ? parseInt(args[args.indexOf(durationFlag) + 1]) : undefined;
+    const files = filesFlag ? args[args.indexOf(filesFlag) + 1]?.split(",") : undefined;
 
-    logTask(title, description, category).then(() => {
+    logTask(title, description, category, { status, tags, duration, files }).then(() => {
       console.log("✅ Activity logged");
       process.exit(0);
     });
