@@ -6,7 +6,7 @@ import { useState, useCallback, DragEvent, useRef } from "react";
 import CardDetailModal, { CardData } from "./CardDetailModal";
 
 // Types
-type KanbanColumn = "blocked" | "now" | "next" | "done";
+type KanbanColumn = "backlog" | "blocked" | "now" | "next" | "done";
 
 interface KanbanCard {
   id: string;
@@ -48,6 +48,12 @@ const defaultCategoryStyle = { bg: "bg-zinc-500/20", text: "text-zinc-400", bord
 
 // Column config
 const columnConfig: Record<KanbanColumn, { title: string; icon: string; color: string; description: string }> = {
+  backlog: {
+    title: "BACKLOG",
+    icon: "📝",
+    color: "border-zinc-500/50",
+    description: "Planned but not prioritized",
+  },
   blocked: {
     title: "BLOCKED",
     icon: "🚫",
@@ -181,6 +187,7 @@ export default function KanbanView() {
   }
 
   const totalCards =
+    columns.backlog.length +
     columns.blocked.length +
     columns.now.length +
     columns.next.length +
@@ -258,8 +265,8 @@ export default function KanbanView() {
       </div>
 
       {/* Kanban Board - Responsive Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-        {(["blocked", "now", "next", "done"] as KanbanColumn[]).map((columnId) => {
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-4">
+        {(["backlog", "blocked", "now", "next", "done"] as KanbanColumn[]).map((columnId) => {
           const config = columnConfig[columnId];
           const cards = columns[columnId];
           const isDragOver = dragOverColumn === columnId;

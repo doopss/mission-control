@@ -5,7 +5,7 @@ import { v } from "convex/values";
 const ONE_DAY = 24 * 60 * 60 * 1000;
 const SEVEN_DAYS = 7 * ONE_DAY;
 
-export type KanbanColumn = "blocked" | "now" | "next" | "done";
+export type KanbanColumn = "backlog" | "blocked" | "now" | "next" | "done";
 
 export interface KanbanCard {
   id: string;
@@ -71,6 +71,7 @@ export const getKanbanData = query({
     }
 
     const columns: Record<KanbanColumn, KanbanCard[]> = {
+      backlog: [],
       blocked: [],
       now: [],
       next: [],
@@ -95,7 +96,10 @@ export const getKanbanData = query({
         fileContents: activity.fileContents,
       };
 
-      if (activity.status === "blocked") {
+      if (activity.status === "backlog") {
+        card.column = "backlog";
+        columns.backlog.push(card);
+      } else if (activity.status === "blocked") {
         card.column = "blocked";
         columns.blocked.push(card);
       } else if (
@@ -147,6 +151,7 @@ export const getKanbanData = query({
     }
 
     // Sort each column
+    columns.backlog.sort((a, b) => b.timestamp - a.timestamp);
     columns.blocked.sort((a, b) => b.timestamp - a.timestamp);
     columns.now.sort((a, b) => {
       // Sort by scheduledFor for tasks, timestamp for activities
@@ -171,6 +176,7 @@ export const moveCard = mutation({
     cardId: v.string(),
     cardType: v.union(v.literal("activity"), v.literal("task")),
     targetColumn: v.union(
+      v.literal("backlog"),
       v.literal("blocked"),
       v.literal("now"),
       v.literal("next"),
@@ -184,6 +190,9 @@ export const moveCard = mutation({
       // Update activity status
       let newStatus: string;
       switch (targetColumn) {
+        case "backlog":
+          newStatus = "backlog";
+          break;
         case "blocked":
           newStatus = "blocked";
           break;
@@ -205,6 +214,14 @@ export const moveCard = mutation({
       let completedAt: number | undefined;
 
       switch (targetColumn) {
+        case "backlog":
+          newStatus = "pending";
+          // Clear scheduledFor to indicate no timeline
+          await ctx.db.patch(cardId as any, {
+            status: newStatus,
+            scheduledFor: undefined,
+          });
+          return;
         case "blocked":
           // Tasks don't have a blocked status by default, keep as pending
           newStatus = "pending";
