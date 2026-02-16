@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
-import { exec } from "child_process";
-import { promisify } from "util";
 
-const execAsync = promisify(exec);
+// Gateway API configuration
+const GATEWAY_URL = process.env.GATEWAY_URL || "http://localhost:3000";
+const GATEWAY_TOKEN = process.env.GATEWAY_TOKEN;
 
 // Format next run timestamp as human-readable string
 function formatNextRun(nextRunAtMs: number): string {
@@ -37,12 +37,28 @@ function extractModel(payload: any): string {
 
 export async function GET() {
   try {
-    // Call OpenClaw Gateway cron list API
-    const { stdout } = await execAsync("openclaw cron list --json");
-    const data = JSON.parse(stdout);
-    
+    // Call OpenClaw Gateway cron list API via HTTP
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+    };
+    if (GATEWAY_TOKEN) {
+      headers["Authorization"] = `Bearer ${GATEWAY_TOKEN}`;
+    }
+
+    const response = await fetch(`${GATEWAY_URL}/api/cron/list`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify({ includeDisabled: true }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Gateway returned ${response.status}`);
+    }
+
+    const data = await response.json();
+
     // Transform Gateway format to UI format
-    const jobs = data.jobs.map((job: any) => ({
+    const jobs = (data.jobs || []).map((job: any) => ({
       id: job.id,
       name: job.name,
       description: job.description,
@@ -72,28 +88,37 @@ export async function PATCH(request: Request) {
   try {
     const body = await request.json();
     const { jobId, action } = body;
-    
+
     if (!jobId || !action) {
       return NextResponse.json(
         { error: "Missing jobId or action" },
         { status: 400 }
       );
     }
-    
-    let command = "";
-    if (action === "enable") {
-      command = `openclaw cron enable ${jobId}`;
-    } else if (action === "disable") {
-      command = `openclaw cron disable ${jobId}`;
-    } else {
-      return NextResponse.json(
-        { error: "Invalid action. Use 'enable' or 'disable'" },
-        { status: 400 }
-      );
+
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+    };
+    if (GATEWAY_TOKEN) {
+      headers["Authorization"] = `Bearer ${GATEWAY_TOKEN}`;
     }
-    
-    await execAsync(command);
-    
+
+    // Call Gateway update API
+    const response = await fetch(`${GATEWAY_URL}/api/cron/update`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify({
+        jobId,
+        patch: {
+          enabled: action === "enable",
+        },
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Gateway returned ${response.status}`);
+    }
+
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Error updating cron job:", error);
